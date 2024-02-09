@@ -1052,6 +1052,7 @@ GameObject:
   - component: {fileID: 582176155}
   - component: {fileID: 582176154}
   - component: {fileID: 582176156}
+  - component: {fileID: 582176157}
   m_Layer: 0
   m_Name: Cursor Locker
   m_TagString: Untagged
@@ -1101,6 +1102,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxRadius: 100
+--- !u!114 &582176157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582176153}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 604f727bf62c3ee4a886fdd5f53c9cd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crosshairTransform: {fileID: 1975751191}
+  maxDistance: 100
 --- !u!1 &637521123
 GameObject:
   m_ObjectHideFlags: 0
@@ -2922,17 +2937,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accelerationForce: 200
   decelerationForce: 100
-  maxForwardSpeed: 500
-  maxBackwardSpeed: 250
-  rollSpeed: 1000
+  maxForwardVelocity: 500
+  maxBackwardVelocity: 250
+  rollTorque: 1000
+  maxRollSpeed: 500
   rollDamping: 1
-  yawSpeed: 1000
-  pitchSpeed: 1000
-  maxRollTorque: 250
-  maxYawTorque: 500
-  maxPitchTorque: 500
+  yawTorque: 500
+  pitchTorque: 500
+  maxYawVelocity: 500
+  maxPitchVelocity: 500
   elevationForce: 100
-  maxElevationSpeed: 100
+  maxElevationVelocity: 100
+  elevationDamping: 0.1
 --- !u!54 &1654616842
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2943,7 +2959,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -3132,7 +3148,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1972534431178057005, guid: 70bc6b6358059e04bbf40b0ecb70b375, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2124.5
+      value: -2124
       objectReference: {fileID: 0}
     - target: {fileID: 1972534431178057005, guid: 70bc6b6358059e04bbf40b0ecb70b375, type: 3}
       propertyPath: m_LocalRotation.w
