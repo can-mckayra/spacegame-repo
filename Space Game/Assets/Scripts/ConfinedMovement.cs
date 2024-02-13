@@ -1,36 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class ConfinedMovement : MonoBehaviour
 {
-    public RectTransform crosshairTransform; // Reference to the RectTransform of the crosshair image
-    public float maxDistance = 100f; // Maximum distance from the center
-    private Vector2 centerPosition; // Center position of the screen
+    public RectTransform crosshair;
+    public float crosshairMultiplier = 10.0f;
+    public float normalizeMagnitude = 100.0f;
+    public float radius = 10000.0f;
+    public float speed = 50.0f;
+
+    public Vector3 screenCenter;
+    public Vector3 crosshairOrigin;
 
     void Start()
     {
-        // Get the center position of the screen
-        centerPosition = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        Cursor.visible = false;
+        screenCenter = new(Screen.width / 2f, Screen.height / 2f, 0.0f);
+        crosshairOrigin = screenCenter;
     }
 
     void Update()
     {
-        // Calculate the mouse movement direction
-        Vector2 mousePosition = Input.mousePosition;
-        Vector2 direction = (mousePosition - centerPosition).normalized;
+        // Get mouse input
+        float x = Input.GetAxis("Mouse X");
+        float y = Input.GetAxis("Mouse Y");
 
-        // Calculate the new position for the crosshair
-        Vector2 newPosition = centerPosition + direction * maxDistance;
+        // Add input to crosshair
+        crosshair.position += new Vector3(x * crosshairMultiplier, y * crosshairMultiplier, 0.0f);
 
-        // Ensure the crosshair stays within the circular boundary
-        float distanceFromCenter = Vector2.Distance(centerPosition, newPosition);
-        if (distanceFromCenter > maxDistance)
+        // Move crosshair to origin to apply circular clamp
+        crosshairOrigin = crosshair.position - screenCenter;
+
+        // Clamp vector magnitude to 10
+        if (crosshairOrigin.sqrMagnitude > radius)
         {
-            newPosition = centerPosition + direction * maxDistance;
+            crosshairOrigin.Normalize();
+            crosshairOrigin *= normalizeMagnitude;
         }
 
-        // Apply the new position to the crosshair RectTransform
-        crosshairTransform.position = newPosition;
+        // Update crosshair position
+        crosshair.position = crosshairOrigin + screenCenter;
+
+        Debug.Log(crosshairOrigin);
+        //Debug.Log(Input.mousePosition.x + ", " + Input.mousePosition.y);
     }
 }
