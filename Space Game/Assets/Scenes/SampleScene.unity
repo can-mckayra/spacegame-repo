@@ -3078,8 +3078,8 @@ MonoBehaviour:
   maxBackwardVelocity: 50
   rollTorque: 25
   rollDamping: 10
-  yawTorque: 100
-  pitchTorque: 100
+  yawTorque: 10
+  pitchTorque: 10
   maxYawVelocity: 100
   maxPitchVelocity: 100
   elevationForce: 100
@@ -3089,9 +3089,6 @@ MonoBehaviour:
   crosshairMultiplier: 10
   normalizeMagnitude: 100
   radius: 10000
-  speed: 50
-  screenCenter: {x: 0, y: 0, z: 0}
-  crosshairOrigin: {x: 0, y: 0, z: 0}
 --- !u!54 &1654616842
 Rigidbody:
   m_ObjectHideFlags: 0

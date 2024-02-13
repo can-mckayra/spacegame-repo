@@ -34,10 +34,9 @@ public class SpaceshipController : MonoBehaviour
     public float crosshairMultiplier = 10.0f;
     public float normalizeMagnitude = 100.0f;
     public float radius = 10000.0f;
-    public float speed = 50.0f;
 
-    public Vector3 screenCenter;
-    public Vector3 crosshairOrigin;
+    private Vector3 screenCenter;
+    private Vector3 crosshairOrigin;
 
     void Start()
     {
@@ -56,14 +55,14 @@ public class SpaceshipController : MonoBehaviour
         elevationInput = Input.GetAxisRaw("Elevation");
         mouseX = Input.GetAxis("Mouse X");
         mouseY = Input.GetAxis("Mouse Y");
-        HandleCrossHair();
+        HandleCrosshair();
     }
 
     void FixedUpdate()
     {
         HandleAcceleration();
         HandleRoll();
-        HandleYawAndPitch();
+        //HandleYawAndPitch();
         HandleElevation();
 
         //Debug.Log(rb.velocity);
@@ -116,7 +115,7 @@ public class SpaceshipController : MonoBehaviour
         rb.AddForce(elevationForce * elevationInput * transform.up);
     }
 
-    void HandleCrossHair()
+    void HandleCrosshair()
     {
         // Get mouse input
         float x = Input.GetAxis("Mouse X");
@@ -137,8 +136,5 @@ public class SpaceshipController : MonoBehaviour
 
         // Update crosshair position
         crosshair.position = crosshairOrigin + screenCenter;
-
-        Debug.Log(crosshairOrigin);
-        //Debug.Log(Input.mousePosition.x + ", " + Input.mousePosition.y);
     }
 }
