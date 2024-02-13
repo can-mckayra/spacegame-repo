@@ -8,8 +8,8 @@ public class SpaceshipController : MonoBehaviour
     public float decelerationForce = 100f;
     public float maxForwardVelocity = 100f;
     public float maxBackwardVelocity = 50f;
-    public float rollTorque = 250f;
-    public float maxRollVelocity = 500f;
+    public float rollTorque = 50f;
+    //public float maxRollVelocity = 500f; reminder to implement angular velocity clamp.
     public float rollDamping = 10f;
     public float yawTorque = 500f;
     public float pitchTorque = 500f;
@@ -46,12 +46,12 @@ public class SpaceshipController : MonoBehaviour
     {
         HandleAcceleration();
         HandleRoll();
-        //HandleYawAndPitch();
+        HandleYawAndPitch();
         HandleElevation();
 
+        //Debug.Log(rb.velocity);
         //Debug.Log(currentForwardSpeed);
-        //Debug.Log(rb.angularVelocity);
-        Debug.Log(rb.velocity);
+        Debug.Log(rb.angularVelocity);
     }
 
     void HandleAcceleration()
@@ -71,14 +71,8 @@ public class SpaceshipController : MonoBehaviour
 
     void HandleRoll()
     {
-        float rollAmount = -rollInput * rollTorque * Time.deltaTime;
+        rb.AddTorque(-rollInput * rollTorque * transform.forward);
 
-        // Cap roll speed
-        float clampedRollAmount = Mathf.Clamp(rollAmount, -maxRollVelocity, maxRollVelocity);
-
-        rb.AddTorque(transform.forward * clampedRollAmount);
-
-        // Apply damping to gradually stop rotation
         if (rollInput == 0 && rb.angularVelocity.magnitude > 0)
         {
             rb.AddTorque(-rb.angularVelocity * rollDamping);

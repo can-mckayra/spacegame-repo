@@ -2943,7 +2943,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1654616837}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fdc7b6476ccea9f40a4dd18a6923517c, type: 3}
   m_Name: 
@@ -2952,9 +2952,8 @@ MonoBehaviour:
   decelerationForce: 100
   maxForwardVelocity: 100
   maxBackwardVelocity: 50
-  rollTorque: 1000
-  maxRollVelocity: 500
-  rollDamping: 1
+  rollTorque: 25
+  rollDamping: 10
   yawTorque: 500
   pitchTorque: 500
   maxYawVelocity: 500
@@ -3013,7 +3012,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1654616837}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfcbf451626e35b4ebaf9cde90cb684a, type: 3}
   m_Name: 
