@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SpaceshipController : MonoBehaviour
 {
+    private Rigidbody rb;
+
+    [Header("Force and Velocity Controls")]
     public float accelerationForce = 200f;
     public float decelerationForce = 100f;
     public float maxForwardVelocity = 100f;
@@ -11,35 +14,49 @@ public class SpaceshipController : MonoBehaviour
     public float rollTorque = 50f;
     //public float maxRollVelocity = 500f; reminder to implement angular velocity clamp.
     public float rollDamping = 10f;
-    public float yawTorque = 500f;
-    public float pitchTorque = 500f;
-    public float maxYawVelocity = 500f;
-    public float maxPitchVelocity = 500f;
+    public float yawTorque = 100f;
+    public float pitchTorque = 100f;
+    public float maxYawVelocity = 100f;
+    public float maxPitchVelocity = 100f;
     public float elevationForce = 100f;
     public float maxElevationVelocity = 100f;
     public float elevationDamping = 0.1f;
 
-    public float accelerationInput;
-    public float rollInput;
-    public float mouseX;
-    public float mouseY;
-    public float elevationInput;
+    // Inputs
+    private float accelerationInput;
+    private float rollInput;
+    private float elevationInput;
+    private float mouseX;
+    private float mouseY;
 
-    private Rigidbody rb;
+    [Header("Crosshair Handling")]
+    public RectTransform crosshair;
+    public float crosshairMultiplier = 10.0f;
+    public float normalizeMagnitude = 100.0f;
+    public float radius = 10000.0f;
+    public float speed = 50.0f;
+
+    public Vector3 screenCenter;
+    public Vector3 crosshairOrigin;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         //rb.maxAngularVelocity = 7f;
+
+        Cursor.visible = false;
+        screenCenter = new(Screen.width / 2f, Screen.height / 2f, 0.0f);
+        crosshairOrigin = screenCenter;
     }
 
     void Update()
     {
         accelerationInput = Input.GetAxisRaw("Vertical");
         rollInput = Input.GetAxisRaw("Horizontal");
-        mouseX = Input.mousePosition.x - Screen.width / 2f;
-        mouseY = Input.mousePosition.y - Screen.height / 2f;
         elevationInput = Input.GetAxisRaw("Elevation");
+        mouseX = Input.GetAxis("Mouse X");
+        mouseY = Input.GetAxis("Mouse Y");
+        HandleCrossHair();
     }
 
     void FixedUpdate()
@@ -81,13 +98,9 @@ public class SpaceshipController : MonoBehaviour
 
     void HandleYawAndPitch()
     {
-        // Calculate normalized values (-1 to 1) based on screen center
-        float normalizedYaw = mouseX / (Screen.width / 2f);
-        float normalizedPitch = mouseY / (Screen.height / 2f);
-
         // Calculate yaw and pitch amounts based on normalized values and speeds
-        float yawAmount = normalizedYaw * yawTorque * Time.deltaTime;
-        float pitchAmount = -normalizedPitch * pitchTorque * Time.deltaTime; // Inverted pitch
+        float yawAmount = crosshairOrigin.x * yawTorque * Time.deltaTime;
+        float pitchAmount = -crosshairOrigin.y * pitchTorque * Time.deltaTime;
 
         // Cap yaw and pitch speed
         float clampedYawAmount = Mathf.Clamp(yawAmount, -maxYawVelocity, maxYawVelocity);
@@ -101,5 +114,31 @@ public class SpaceshipController : MonoBehaviour
     void HandleElevation()
     {
         rb.AddForce(elevationForce * elevationInput * transform.up);
+    }
+
+    void HandleCrossHair()
+    {
+        // Get mouse input
+        float x = Input.GetAxis("Mouse X");
+        float y = Input.GetAxis("Mouse Y");
+
+        // Add input to crosshair
+        crosshair.position += new Vector3(x * crosshairMultiplier, y * crosshairMultiplier, 0.0f);
+
+        // Move crosshair to origin to apply circular clamp
+        crosshairOrigin = crosshair.position - screenCenter;
+
+        // Clamp vector magnitude to 10
+        if (crosshairOrigin.sqrMagnitude > radius)
+        {
+            crosshairOrigin.Normalize();
+            crosshairOrigin *= normalizeMagnitude;
+        }
+
+        // Update crosshair position
+        crosshair.position = crosshairOrigin + screenCenter;
+
+        Debug.Log(crosshairOrigin);
+        //Debug.Log(Input.mousePosition.x + ", " + Input.mousePosition.y);
     }
 }

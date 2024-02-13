@@ -1185,7 +1185,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 582176153}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 604f727bf62c3ee4a886fdd5f53c9cd7, type: 3}
   m_Name: 
@@ -1195,7 +1195,7 @@ MonoBehaviour:
   normalizeMagnitude: 100
   radius: 10000
   speed: 50
-  screenCenter: {x: 507, y: 252.5, z: 0}
+  screenCenter: {x: 0, y: 0, z: 0}
   crosshairOrigin: {x: 0, y: 0, z: 0}
 --- !u!114 &582176158
 MonoBehaviour:
@@ -3067,7 +3067,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1654616837}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fdc7b6476ccea9f40a4dd18a6923517c, type: 3}
   m_Name: 
@@ -3078,18 +3078,20 @@ MonoBehaviour:
   maxBackwardVelocity: 50
   rollTorque: 25
   rollDamping: 10
-  yawTorque: 500
-  pitchTorque: 500
-  maxYawVelocity: 500
-  maxPitchVelocity: 500
+  yawTorque: 100
+  pitchTorque: 100
+  maxYawVelocity: 100
+  maxPitchVelocity: 100
   elevationForce: 100
   maxElevationVelocity: 100
   elevationDamping: 0.1
-  accelerationInput: 0
-  rollInput: 0
-  mouseX: 0
-  mouseY: 0
-  elevationInput: 0
+  crosshair: {fileID: 1975751191}
+  crosshairMultiplier: 10
+  normalizeMagnitude: 100
+  radius: 10000
+  speed: 50
+  screenCenter: {x: 0, y: 0, z: 0}
+  crosshairOrigin: {x: 0, y: 0, z: 0}
 --- !u!54 &1654616842
 Rigidbody:
   m_ObjectHideFlags: 0
