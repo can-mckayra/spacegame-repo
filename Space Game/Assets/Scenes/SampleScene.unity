@@ -1053,6 +1053,7 @@ GameObject:
   - component: {fileID: 582176154}
   - component: {fileID: 582176156}
   - component: {fileID: 582176157}
+  - component: {fileID: 582176158}
   m_Layer: 0
   m_Name: Cursor Locker
   m_TagString: Untagged
@@ -1116,6 +1117,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   crosshairTransform: {fileID: 1975751191}
   maxDistance: 100
+--- !u!114 &582176158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582176153}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ca34a869cd298549b09afe70fbeb5c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &637521123
 GameObject:
   m_ObjectHideFlags: 0
@@ -2930,17 +2943,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1654616837}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fdc7b6476ccea9f40a4dd18a6923517c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   accelerationForce: 200
   decelerationForce: 100
-  maxForwardVelocity: 500
-  maxBackwardVelocity: 250
+  maxForwardVelocity: 100
+  maxBackwardVelocity: 50
   rollTorque: 1000
-  maxRollSpeed: 500
+  maxRollVelocity: 500
   rollDamping: 1
   yawTorque: 500
   pitchTorque: 500
@@ -2949,6 +2962,11 @@ MonoBehaviour:
   elevationForce: 100
   maxElevationVelocity: 100
   elevationDamping: 0.1
+  accelerationInput: 0
+  rollInput: 0
+  mouseX: 0
+  mouseY: 0
+  elevationInput: 0
 --- !u!54 &1654616842
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2988,6 +3006,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0af020c5b0cbd5c4583635020c0d77a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1654616846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654616837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfcbf451626e35b4ebaf9cde90cb684a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollTorque: 10
+  rollDamping: 10
+  rollInput: 0
+  mouseX: 0
+  mouseY: 0
+  yawTorque: 500
+  pitchTorque: 500
+  maxYawVelocity: 500
+  maxPitchVelocity: 500
 --- !u!1 &1710719915
 GameObject:
   m_ObjectHideFlags: 0
@@ -3144,11 +3183,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1972534431178057005, guid: 70bc6b6358059e04bbf40b0ecb70b375, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 22
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1972534431178057005, guid: 70bc6b6358059e04bbf40b0ecb70b375, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2124
+      value: -2465.25
       objectReference: {fileID: 0}
     - target: {fileID: 1972534431178057005, guid: 70bc6b6358059e04bbf40b0ecb70b375, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3156,15 +3195,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1972534431178057005, guid: 70bc6b6358059e04bbf40b0ecb70b375, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1972534431178057005, guid: 70bc6b6358059e04bbf40b0ecb70b375, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1972534431178057005, guid: 70bc6b6358059e04bbf40b0ecb70b375, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1972534431178057005, guid: 70bc6b6358059e04bbf40b0ecb70b375, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3194,6 +3233,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1158561113003540375, guid: 70bc6b6358059e04bbf40b0ecb70b375, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1654616845}
+    - targetCorrespondingSourceObject: {fileID: 1158561113003540375, guid: 70bc6b6358059e04bbf40b0ecb70b375, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1654616846}
   m_SourcePrefab: {fileID: 100100000, guid: 70bc6b6358059e04bbf40b0ecb70b375, type: 3}
 --- !u!1 &1946537192
 GameObject:

@@ -6,8 +6,8 @@ public class SpaceshipController : MonoBehaviour
 {
     public float accelerationForce = 200f;
     public float decelerationForce = 100f;
-    public float maxForwardVelocity = 500f;
-    public float maxBackwardVelocity = 250f;
+    public float maxForwardVelocity = 100f;
+    public float maxBackwardVelocity = 50f;
     public float rollTorque = 250f;
     public float maxRollVelocity = 500f;
     public float rollDamping = 10f;
@@ -19,6 +19,12 @@ public class SpaceshipController : MonoBehaviour
     public float maxElevationVelocity = 100f;
     public float elevationDamping = 0.1f;
 
+    public float accelerationInput;
+    public float rollInput;
+    public float mouseX;
+    public float mouseY;
+    public float elevationInput;
+
     private Rigidbody rb;
 
     void Start()
@@ -29,33 +35,42 @@ public class SpaceshipController : MonoBehaviour
 
     void Update()
     {
+        accelerationInput = Input.GetAxisRaw("Vertical");
+        rollInput = Input.GetAxisRaw("Horizontal");
+        mouseX = Input.mousePosition.x - Screen.width / 2f;
+        mouseY = Input.mousePosition.y - Screen.height / 2f;
+        elevationInput = Input.GetAxisRaw("Elevation");
+    }
+
+    void FixedUpdate()
+    {
         HandleAcceleration();
         HandleRoll();
-        HandleYawAndPitch();
+        //HandleYawAndPitch();
         HandleElevation();
 
-        //Debug.Log(rb.velocity);
-        Debug.Log(rb.angularVelocity);
+        //Debug.Log(currentForwardSpeed);
+        //Debug.Log(rb.angularVelocity);
+        Debug.Log(rb.velocity);
     }
 
     void HandleAcceleration()
     {
-        float accelerationInput = Input.GetAxisRaw("Vertical");
         if (accelerationInput > 0)
         {
             rb.AddForce(accelerationForce * accelerationInput * transform.forward);
-            rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxForwardVelocity);
         }
         else if (accelerationInput < 0)
         {
-            rb.AddForce(transform.forward * decelerationForce * accelerationInput); // Slower deceleration
-            rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxBackwardVelocity);
+            rb.AddForce(accelerationInput * decelerationForce * transform.forward); // Slower deceleration
         }
+
+        // Clamp velocity after applying forces
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, accelerationInput >= 0 ? maxForwardVelocity : maxBackwardVelocity);
     }
 
     void HandleRoll()
     {
-        float rollInput = Input.GetAxisRaw("Horizontal");
         float rollAmount = -rollInput * rollTorque * Time.deltaTime;
 
         // Cap roll speed
@@ -72,10 +87,6 @@ public class SpaceshipController : MonoBehaviour
 
     void HandleYawAndPitch()
     {
-        // Calculate cursor position relative to the center of the screen
-        float mouseX = Input.mousePosition.x - Screen.width / 2f;
-        float mouseY = Input.mousePosition.y - Screen.height / 2f;
-
         // Calculate normalized values (-1 to 1) based on screen center
         float normalizedYaw = mouseX / (Screen.width / 2f);
         float normalizedPitch = mouseY / (Screen.height / 2f);
@@ -95,30 +106,6 @@ public class SpaceshipController : MonoBehaviour
 
     void HandleElevation()
     {
-        float elevationInput = Input.GetAxisRaw("Elevation");
-
-        // Check if elevation input is active
-        if (elevationInput != 0)
-        {
-            // Apply upward force when elevation key is pressed
-            rb.AddForce(elevationForce * elevationInput * transform.up);
-        }
-        else
-        {
-            // Calculate the magnitude of the upward velocity
-            float upwardVelocityMagnitude = Vector3.Dot(rb.velocity, transform.up);
-
-            // Calculate the damping factor based on current upward velocity
-            float dampingFactor = Mathf.Clamp01(upwardVelocityMagnitude / maxElevationVelocity);
-
-            // Calculate damping force to gradually reduce upward velocity when elevation key is not pressed
-            Vector3 dampingForce = dampingFactor * elevationDamping * -upwardVelocityMagnitude * transform.up;
-
-            // Apply damping force
-            rb.AddForce(dampingForce);
-        }
-
-        // Clamp the magnitude of the velocity to limit speed
-        rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxElevationVelocity);
+        rb.AddForce(elevationForce * elevationInput * transform.up);
     }
 }
