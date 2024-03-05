@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class SpaceshipController : MonoBehaviour
@@ -9,15 +10,15 @@ public class SpaceshipController : MonoBehaviour
     [Header("Force and Velocity Controls")]
     public float accelerationForce = 200f;
     public float decelerationForce = 100f;
-    public float maxForwardVelocity = 100f;
+    public float maxForwardVelocity = 250f;
     public float maxBackwardVelocity = 50f;
-    public float rollTorque = 50f;
+    public float rollTorque = 10f;
     //public float maxRollVelocity = 500f; reminder to implement angular velocity clamp.
     public float rollDamping = 10f;
-    public float yawTorque = 100f;
-    public float pitchTorque = 100f;
-    public float maxYawVelocity = 100f;
-    public float maxPitchVelocity = 100f;
+    public float yawTorque = 25f;
+    public float pitchTorque = 25f;
+    public float maxYawVelocity = 50f;
+    public float maxPitchVelocity = 50f;
     public float elevationForce = 100f;
     public float maxElevationVelocity = 100f;
     public float elevationDamping = 0.1f;
@@ -38,11 +39,14 @@ public class SpaceshipController : MonoBehaviour
     private Vector3 screenCenter;
     private Vector3 crosshairOrigin;
 
+    public float stabilizationSpeed = 1.5f;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        //rb.maxAngularVelocity = 7f;
+        rb.maxAngularVelocity = 5f;
 
+        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         screenCenter = new(Screen.width / 2f, Screen.height / 2f, 0.0f);
         crosshairOrigin = screenCenter;
@@ -65,9 +69,11 @@ public class SpaceshipController : MonoBehaviour
         //HandleYawAndPitch();
         HandleElevation();
 
+        Stabilize();
+
         //Debug.Log(rb.velocity);
         //Debug.Log(currentForwardSpeed);
-        Debug.Log(rb.angularVelocity);
+        //Debug.Log(rb.angularVelocity);
     }
 
     void HandleAcceleration()
@@ -101,13 +107,13 @@ public class SpaceshipController : MonoBehaviour
         float yawAmount = crosshairOrigin.x * yawTorque * Time.deltaTime;
         float pitchAmount = -crosshairOrigin.y * pitchTorque * Time.deltaTime;
 
-        // Cap yaw and pitch speed
-        float clampedYawAmount = Mathf.Clamp(yawAmount, -maxYawVelocity, maxYawVelocity);
-        float clampedPitchAmount = Mathf.Clamp(pitchAmount, -maxPitchVelocity, maxPitchVelocity);
-        
+        // Cap yaw and pitch speed (Doesn't work)
+        //float clampedYawAmount = Mathf.Clamp(yawAmount, -maxYawVelocity, maxYawVelocity);
+        //float clampedPitchAmount = Mathf.Clamp(pitchAmount, -maxPitchVelocity, maxPitchVelocity);
+
         // Apply yaw and pitch torques to the rigidbody
-        rb.AddTorque(transform.up * clampedYawAmount);
-        rb.AddTorque(transform.right * clampedPitchAmount); // Use right instead of -transform.right for inverted pitch
+        rb.AddTorque(transform.up * yawAmount);
+        rb.AddTorque(transform.right * pitchAmount); // Use right instead of -transform.right for inverted pitch
     }
 
     void HandleElevation()
@@ -136,5 +142,19 @@ public class SpaceshipController : MonoBehaviour
 
         // Update crosshair position
         crosshair.position = crosshairOrigin + screenCenter;
+    }
+
+    void Stabilize()
+    {
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            // Calculate the opposite force to gradually reduce velocity
+            Vector3 oppositeVelocity = stabilizationSpeed * Time.deltaTime * -rb.velocity;
+            rb.AddForce(oppositeVelocity, ForceMode.VelocityChange);
+
+            // Calculate the opposite torque to gradually reduce angular velocity
+            Vector3 oppositeAngularVelocity = -rb.angularVelocity * stabilizationSpeed * Time.deltaTime;
+            rb.AddTorque(oppositeAngularVelocity, ForceMode.VelocityChange);
+        }
     }
 }
