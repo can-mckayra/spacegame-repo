@@ -1,19 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.UI.Image;
+using UnityEngine.UIElements;
 
 public class TestScript : MonoBehaviour
 {
-    private Rigidbody rb;
+    public GameObject currentHitObject;
 
-    private void Start()
+    public float sphereRadius;
+    public float maxDistance;
+    public LayerMask layerMask;
+
+    private Vector3 origin;
+    private Vector3 direction;
+
+    private float currentHitDistance;
+    
+    void Start()
     {
-        rb = GetComponent<Rigidbody>();
+
     }
 
-    private void FixedUpdate()
+    void Update()
     {
-        rb.AddForce(transform.forward * 1);
+        origin = transform.position;
+        direction = transform.forward;
+        RaycastHit hit;
+        if (Physics.SphereCast(origin, sphereRadius, direction, out hit, maxDistance, layerMask, QueryTriggerInteraction.UseGlobal))
+        {
+            currentHitObject = hit.transform.gameObject;
+            currentHitDistance = hit.distance;
+        }
+        else
+        {
+            currentHitDistance = maxDistance;
+            currentHitObject = null;
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Debug.DrawLine(origin, origin + direction * currentHitDistance);
+        Gizmos.DrawWireSphere(origin + direction * currentHitDistance, sphereRadius);
     }
 }
