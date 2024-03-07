@@ -1,15 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
-public class MissileHandler : MonoBehaviour
+public class TestScriptTwo : MonoBehaviour
 {
-    [SerializeField] private GameObject targetObject;
-    [SerializeField] private string targetTag = "Team 1";
+    public GameObject targetObject;
+    public string targetTag = "Team 1";
 
-    [SerializeField]
-    private enum MissileState
+    public enum MissileState
     {
         Dropping,
         Boosting,
@@ -17,13 +15,16 @@ public class MissileHandler : MonoBehaviour
         Inactive
     }
 
-    [SerializeField] private MissileState missileState = MissileState.Dropping;
+    public MissileState missileState = MissileState.Dropping;
 
-    [SerializeField] private float dropDuration = 0.25f;
-    [SerializeField] private float dropForce = 0.25f;
-    [SerializeField] private float boostDuration = 0.25f;
-    [SerializeField] private float boostForce = 0.25f;
-    [SerializeField] private float maxVelocity = 25.0f;
+    public float dropDuration = 0.25f;
+    public float dropForce = 0.25f;
+    public float boostDuration = 0.25f;
+    public float boostForce = 0.25f;
+    
+    public float maxVelocityZ = 25.0f;
+    public float maxVelocityX = 5f;
+    public float maxVelocityY = 5f;
 
     private Rigidbody rb;
 
@@ -49,7 +50,7 @@ public class MissileHandler : MonoBehaviour
                 break;
         }
 
-        //Debug.Log(rb.velocity);
+        Debug.Log(rb.velocity);
     }
 
     private void Drop()
@@ -68,9 +69,18 @@ public class MissileHandler : MonoBehaviour
 
     private void Home()
     {
+        Vector3 localVelocity = transform.InverseTransformDirection(rb.velocity);
+
+        float clampedVelocityX = Mathf.Clamp(localVelocity.x, -maxVelocityX, maxVelocityX);
+        float clampedVelocityY = Mathf.Clamp(localVelocity.y, -maxVelocityY, maxVelocityY);
+
+        Vector3 clampedGlobalVelocity = transform.TransformDirection(new Vector3(clampedVelocityX, clampedVelocityY, localVelocity.z));
+
         transform.LookAt(targetObject.transform);
-        rb.AddForce(transform.forward * 1);
-        rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxVelocity);
+        rb.velocity = clampedGlobalVelocity;
+
+        //rb.AddForce(transform.forward * boostForce);
+        //rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxVelocityZ);
     }
 
     private IEnumerator DropPhaseEndBoostPhaseStart(float dropDuration)

@@ -62,54 +62,19 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 11fcd3a565a91ce4cb564f6f5e266487, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6367176065411422771}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 11fcd3a565a91ce4cb564f6f5e266487, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6716364747179751634}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 11fcd3a565a91ce4cb564f6f5e266487, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2729700376623777074}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 11fcd3a565a91ce4cb564f6f5e266487, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4171503369128092799}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 11fcd3a565a91ce4cb564f6f5e266487, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6716364747179751634}
   m_SourcePrefab: {fileID: 100100000, guid: 11fcd3a565a91ce4cb564f6f5e266487, type: 3}
 --- !u!1 &7853537531428807792 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 11fcd3a565a91ce4cb564f6f5e266487, type: 3}
   m_PrefabInstance: {fileID: 6934478100366235937}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6367176065411422771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7853537531428807792}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfcbf451626e35b4ebaf9cde90cb684a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6716364747179751634
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7853537531428807792}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ef646e66cf19ee4c8f539d7fbb0271d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetObject: {fileID: 0}
-  targetTag: Team 1
-  missileState: 0
-  dropDuration: 1
-  dropForce: 0.25
-  boostDuration: 1
-  boostForce: 0.25
-  maxVelocity: 25
 --- !u!54 &2729700376623777074
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -160,3 +125,23 @@ CapsuleCollider:
   m_Height: 13.791086
   m_Direction: 2
   m_Center: {x: 0, y: 1.4802976e-14, z: 1.0715317}
+--- !u!114 &6716364747179751634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7853537531428807792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ef646e66cf19ee4c8f539d7fbb0271d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObject: {fileID: 0}
+  targetTag: Team 1
+  missileState: 0
+  dropDuration: 1
+  dropForce: 0.25
+  boostDuration: 1
+  boostForce: 0.25
+  maxVelocity: 25

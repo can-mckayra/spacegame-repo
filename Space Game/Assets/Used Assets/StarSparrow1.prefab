@@ -1228,11 +1228,11 @@ GameObject:
   - component: {fileID: 8976812835307352954}
   - component: {fileID: 362900082582327685}
   - component: {fileID: 1428479325271521731}
-  - component: {fileID: 8122107057459423612}
   - component: {fileID: 543267148480672196}
   - component: {fileID: 1694975024445594952}
-  - component: {fileID: 4356304732278892553}
+  - component: {fileID: 8122107057459423612}
   - component: {fileID: 3144412677790269889}
+  - component: {fileID: 4356304732278892553}
   m_Layer: 0
   m_Name: StarSparrow1
   m_TagString: Untagged
@@ -1308,35 +1308,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8122107057459423612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4941797644383189701}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdc7b6476ccea9f40a4dd18a6923517c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  accelerationForce: 500
-  decelerationForce: 100
-  maxForwardVelocity: 200
-  maxBackwardVelocity: 50
-  rollTorque: 25
-  rollDamping: 10
-  yawTorque: 5
-  pitchTorque: 5
-  maxYawVelocity: 100
-  maxPitchVelocity: 100
-  elevationForce: 100
-  maxElevationVelocity: 100
-  elevationDamping: 0.1
-  crosshair: {fileID: 0}
-  crosshairMultiplier: 10
-  normalizeMagnitude: 100
-  radius: 10000
 --- !u!54 &543267148480672196
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1376,7 +1347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0af020c5b0cbd5c4583635020c0d77a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4356304732278892553
+--- !u!114 &8122107057459423612
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1385,19 +1356,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 4941797644383189701}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfcbf451626e35b4ebaf9cde90cb684a, type: 3}
+  m_Script: {fileID: 11500000, guid: fdc7b6476ccea9f40a4dd18a6923517c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accelerationForce: 250
+  accelerationForce: 500
   decelerationForce: 100
-  maxForwardVelocity: 250
+  maxForwardVelocity: 200
   maxBackwardVelocity: 50
-  rollTorque: 10
+  rollTorque: 25
   rollDamping: 10
-  yawTorque: 25
-  pitchTorque: 25
-  maxYawVelocity: 50
-  maxPitchVelocity: 50
+  yawTorque: 20
+  pitchTorque: 20
+  maxYawVelocity: 100
+  maxPitchVelocity: 100
   elevationForce: 100
   maxElevationVelocity: 100
   elevationDamping: 0.1
@@ -1420,6 +1391,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   missilePrefab: {fileID: 8744057551777548960, guid: 0636668d92426ff4da0263d8e593167d, type: 3}
   launchPoint: {fileID: 7934759304655379207}
+  radius: 15
+  range: 1500
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  targetTag: Team 1
+  targetLocked: 0
+  currentHitDistance: 0
+--- !u!114 &4356304732278892553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4941797644383189701}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfcbf451626e35b4ebaf9cde90cb684a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missilePrefab: {fileID: 0}
+  launchPoint: {fileID: 0}
+  radius: 10000
+  range: 100
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  targetTag: Team 1
+  targetLocked: 0
+  currentHitDistance: 0
 --- !u!1 &5045915058025232690
 GameObject:
   m_ObjectHideFlags: 0

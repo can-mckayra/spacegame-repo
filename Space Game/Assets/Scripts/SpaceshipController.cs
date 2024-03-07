@@ -12,9 +12,9 @@ public class SpaceshipController : MonoBehaviour
     public float decelerationForce = 100f;
     public float maxForwardVelocity = 250f;
     public float maxBackwardVelocity = 50f;
-    public float rollTorque = 10f;
+    public float rollTorque = 20f;
     //public float maxRollVelocity = 500f; reminder to implement angular velocity clamp.
-    public float rollDamping = 10f;
+    public float rollDamping = 20f;
     public float yawTorque = 25f;
     public float pitchTorque = 25f;
     public float maxYawVelocity = 50f;
@@ -44,7 +44,7 @@ public class SpaceshipController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.maxAngularVelocity = 5f;
+        //rb.maxAngularVelocity = 5f;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -66,7 +66,7 @@ public class SpaceshipController : MonoBehaviour
     {
         HandleAcceleration();
         HandleRoll();
-        //HandleYawAndPitch();
+        HandleYawAndPitch();
         HandleElevation();
 
         Stabilize();

@@ -4,18 +4,59 @@ using UnityEngine;
 
 public class MissileSpawner : MonoBehaviour
 {
-    public GameObject missilePrefab;
-    public Transform launchPoint; // The point under the spaceship where the missile will be instantiated
+    [SerializeField] private GameObject missilePrefab;
+    [SerializeField] private Transform launchPoint; // The point under the spaceship where the missile will be instantiated
 
-    void Update()
+    [Header("Spherecast Variables")]
+    [SerializeField] private float radius = 3f;
+    [SerializeField] private float range = 500f;
+    [SerializeField] private LayerMask layerMask;
+    [SerializeField] private string targetTag = "Team 1";
+    [SerializeField] private bool targetLocked = false;
+
+    // For visualization
+    //[SerializeField] private GameObject currentHitObject;
+    [SerializeField] private float currentHitDistance;
+
+    private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V))
+        Radar();
+
+        if (Input.GetKeyDown(KeyCode.V) && targetLocked == true)
         {
             SpawnMissile();
+            Debug.Log("Target locked! Firing!");
+        }
+        else if (Input.GetKeyDown(KeyCode.V) && targetLocked == false)
+        {
+            Debug.Log("Target not found!");
         }
     }
 
-    void SpawnMissile()
+    private void Radar()
+    {
+        if (Physics.SphereCast(transform.position + new Vector3(0f, 0f, 0f), radius, transform.forward, out RaycastHit hit, range, layerMask, QueryTriggerInteraction.UseGlobal))
+        {
+            if (hit.collider.CompareTag(targetTag))
+            {
+                // For visualization
+                //currentHitObject = hit.transform.gameObject;
+                currentHitDistance = hit.distance;
+
+                targetLocked = true;
+            }
+        }
+        else
+        {
+            // For visualization
+            //currentHitObject = null;
+            currentHitDistance = range;
+
+            targetLocked = false;
+        }
+    }
+
+    private void SpawnMissile()
     {
         if (missilePrefab != null && launchPoint != null)
         {
@@ -35,5 +76,13 @@ public class MissileSpawner : MonoBehaviour
                 missileRb.velocity = GetComponent<Rigidbody>().velocity;
             }
         }
+    }
+
+    // For visualization
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Debug.DrawLine(transform.position, transform.position + transform.forward * currentHitDistance);
+        Gizmos.DrawWireSphere(transform.position + transform.forward * currentHitDistance, radius);
     }
 }
