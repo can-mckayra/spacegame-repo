@@ -23,7 +23,8 @@ public class MissileHandler : MonoBehaviour
     [SerializeField] private float dropForce = 0.25f;
     [SerializeField] private float boostDuration = 0.25f;
     [SerializeField] private float boostForce = 0.25f;
-    [SerializeField] private float maxVelocity = 25.0f;
+    [SerializeField] private float homeForce = 10f;
+    [SerializeField] private float maxVelocity = 100f;
 
     private Rigidbody rb;
 
@@ -69,7 +70,7 @@ public class MissileHandler : MonoBehaviour
     private void Home()
     {
         transform.LookAt(targetObject.transform);
-        rb.AddForce(transform.forward * 1);
+        rb.AddForce(transform.forward * homeForce);
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxVelocity);
     }
 

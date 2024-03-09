@@ -66,7 +66,7 @@ public class SpaceshipController : MonoBehaviour
     {
         HandleAcceleration();
         HandleRoll();
-        HandleYawAndPitch();
+        //HandleYawAndPitch();
         HandleElevation();
 
         Stabilize();
