@@ -13,16 +13,15 @@ public class MissileHandler : MonoBehaviour
     {
         Dropping,
         Boosting,
-        Homing,
-        Inactive
+        Homing
     }
 
     [SerializeField] private MissileState missileState = MissileState.Dropping;
 
-    [SerializeField] private float dropDuration = 0.25f;
-    [SerializeField] private float dropForce = 0.25f;
-    [SerializeField] private float boostDuration = 0.25f;
-    [SerializeField] private float boostForce = 0.25f;
+    [SerializeField] private float dropDuration = 0.5f;
+    [SerializeField] private float dropForce = 0.5f;
+    [SerializeField] private float boostDuration = 1f;
+    [SerializeField] private float boostForce = 1.5f;
     [SerializeField] private float homeForce = 10f;
     [SerializeField] private float maxVelocity = 100f;
 
@@ -50,7 +49,7 @@ public class MissileHandler : MonoBehaviour
                 break;
         }
 
-        //Debug.Log(rb.velocity);
+        Debug.Log(rb.velocity.magnitude);
     }
 
     private void Drop()
@@ -85,5 +84,10 @@ public class MissileHandler : MonoBehaviour
     {
         yield return new WaitForSeconds(boostDuration);
         missileState = MissileState.Homing;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Destroy(gameObject);
     }
 }

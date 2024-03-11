@@ -30,6 +30,8 @@ public class SpaceshipController : MonoBehaviour
     private float mouseX;
     private float mouseY;
 
+    public bool yawPitchLocked = true;
+
     [Header("Crosshair Handling")]
     public RectTransform crosshair;
     public float crosshairMultiplier = 10.0f;
@@ -60,13 +62,18 @@ public class SpaceshipController : MonoBehaviour
         mouseX = Input.GetAxis("Mouse X");
         mouseY = Input.GetAxis("Mouse Y");
         HandleCrosshair();
+
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            yawPitchLocked = !yawPitchLocked;
+        }
     }
 
     void FixedUpdate()
     {
         HandleAcceleration();
         HandleRoll();
-        //HandleYawAndPitch();
+        HandleYawAndPitch();
         HandleElevation();
 
         Stabilize();
@@ -111,9 +118,12 @@ public class SpaceshipController : MonoBehaviour
         //float clampedYawAmount = Mathf.Clamp(yawAmount, -maxYawVelocity, maxYawVelocity);
         //float clampedPitchAmount = Mathf.Clamp(pitchAmount, -maxPitchVelocity, maxPitchVelocity);
 
-        // Apply yaw and pitch torques to the rigidbody
-        rb.AddTorque(transform.up * yawAmount);
-        rb.AddTorque(transform.right * pitchAmount); // Use right instead of -transform.right for inverted pitch
+        if (!yawPitchLocked)
+        {
+            // Apply yaw and pitch torques to the rigidbody
+            rb.AddTorque(transform.up * yawAmount);
+            rb.AddTorque(transform.right * pitchAmount); // Use right instead of -transform.right for inverted pitch
+        }
     }
 
     void HandleElevation()

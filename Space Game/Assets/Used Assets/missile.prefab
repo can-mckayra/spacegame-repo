@@ -140,9 +140,9 @@ MonoBehaviour:
   targetObject: {fileID: 0}
   targetTag: Team 1
   missileState: 0
-  dropDuration: 1
-  dropForce: 0.25
+  dropDuration: 0.5
+  dropForce: 0.5
   boostDuration: 1
-  boostForce: 0.25
+  boostForce: 1.5
   homeForce: 10
   maxVelocity: 100
