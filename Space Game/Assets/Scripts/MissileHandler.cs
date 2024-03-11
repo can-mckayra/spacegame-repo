@@ -49,7 +49,7 @@ public class MissileHandler : MonoBehaviour
                 break;
         }
 
-        Debug.Log(rb.velocity.magnitude);
+        //Debug.Log(rb.velocity.magnitude);
     }
 
     private void Drop()

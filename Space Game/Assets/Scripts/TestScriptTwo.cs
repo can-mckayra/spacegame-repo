@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class TestScriptTwo : MonoBehaviour
 {
-    public GameObject targetObject;
-    public string targetTag = "Team 1";
+    [SerializeField] private GameObject targetObject;
+    [SerializeField] private string targetTag = "Team 1";
 
-    public enum MissileState
+    private enum MissileState
     {
         Dropping,
         Boosting,
@@ -15,16 +15,16 @@ public class TestScriptTwo : MonoBehaviour
         Inactive
     }
 
-    public MissileState missileState = MissileState.Dropping;
+    [SerializeField] private MissileState missileState = MissileState.Dropping;
 
-    public float dropDuration = 0.25f;
-    public float dropForce = 0.25f;
-    public float boostDuration = 0.25f;
-    public float boostForce = 0.25f;
+    [SerializeField] private float dropDuration = 0.25f;
+    [SerializeField] private float dropForce = 0.25f;
+    [SerializeField] private float boostDuration = 0.25f;
+    [SerializeField] private float boostForce = 0.25f;
     
-    public float maxVelocityZ = 25.0f;
-    public float maxVelocityX = 5f;
-    public float maxVelocityY = 5f;
+    [SerializeField] private float maxVelocityZ = 25.0f;
+    [SerializeField] private float maxVelocityX = 5f;
+    [SerializeField] private float maxVelocityY = 5f;
 
     private Rigidbody rb;
 

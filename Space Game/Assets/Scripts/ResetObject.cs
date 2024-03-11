@@ -5,6 +5,7 @@ using UnityEngine;
 public class ResetObject : MonoBehaviour
 {
     private Rigidbody rb;
+
     private Vector3 initialPosition;
     private Vector3 initialVelocity;
     private Quaternion initialRotation;

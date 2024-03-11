@@ -8,20 +8,20 @@ public class SpaceshipController : MonoBehaviour
     private Rigidbody rb;
 
     [Header("Force and Velocity Controls")]
-    public float accelerationForce = 200f;
-    public float decelerationForce = 100f;
-    public float maxForwardVelocity = 250f;
-    public float maxBackwardVelocity = 50f;
-    public float rollTorque = 20f;
+    [SerializeField] private float accelerationForce = 200f;
+    [SerializeField] private float decelerationForce = 100f;
+    [SerializeField] private float maxForwardVelocity = 250f;
+    [SerializeField] private float maxBackwardVelocity = 50f;
+    [SerializeField] private float rollTorque = 20f;
     //public float maxRollVelocity = 500f; reminder to implement angular velocity clamp.
-    public float rollDamping = 20f;
-    public float yawTorque = 25f;
-    public float pitchTorque = 25f;
-    public float maxYawVelocity = 50f;
-    public float maxPitchVelocity = 50f;
-    public float elevationForce = 100f;
-    public float maxElevationVelocity = 100f;
-    public float elevationDamping = 0.1f;
+    [SerializeField] private float rollDamping = 20f;
+    [SerializeField] private float yawTorque = 25f;
+    [SerializeField] private float pitchTorque = 25f;
+    [SerializeField] private float maxYawVelocity = 50f;
+    [SerializeField] private float maxPitchVelocity = 50f;
+    [SerializeField] private float elevationForce = 100f;
+    [SerializeField] private float maxElevationVelocity = 100f;
+    [SerializeField] private float elevationDamping = 0.1f;
 
     // Inputs
     private float accelerationInput;
@@ -30,18 +30,18 @@ public class SpaceshipController : MonoBehaviour
     private float mouseX;
     private float mouseY;
 
-    public bool yawPitchLocked = true;
+    [SerializeField] private bool yawPitchLocked = true;
 
     [Header("Crosshair Handling")]
-    public RectTransform crosshair;
-    public float crosshairMultiplier = 10.0f;
-    public float normalizeMagnitude = 100.0f;
-    public float radius = 10000.0f;
+    [SerializeField] private RectTransform crosshair;
+    [SerializeField] private float crosshairMultiplier = 10.0f;
+    [SerializeField] private float normalizeMagnitude = 100.0f;
+    [SerializeField] private float radius = 10000.0f;
 
     private Vector3 screenCenter;
     private Vector3 crosshairOrigin;
 
-    public float stabilizationSpeed = 1.5f;
+    [SerializeField] private float stabilizationSpeed = 1.5f;
 
     void Start()
     {

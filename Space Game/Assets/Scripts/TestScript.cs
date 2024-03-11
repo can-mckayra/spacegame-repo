@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class TestScript : MonoBehaviour
 {
-    public Rigidbody rb;
+    [SerializeField] private Rigidbody rb;
 
-    public float force = 1;
-    public float maxVelocity = 10f;
+    [SerializeField] private float force = 1;
+    [SerializeField] private float maxVelocity = 10f;
 
     private void Start()
     {
