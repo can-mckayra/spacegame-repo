@@ -78,7 +78,7 @@ public class SpaceshipController : MonoBehaviour
 
         Stabilize();
 
-        //Debug.Log(rb.velocity);
+        Debug.Log(rb.velocity.magnitude);
         //Debug.Log(currentForwardSpeed);
         //Debug.Log(rb.angularVelocity);
     }

@@ -4,21 +4,44 @@ using UnityEngine;
 
 public class TestScript : MonoBehaviour
 {
-    [SerializeField] private Rigidbody rb;
+    [SerializeField] private GameObject target;
+    [SerializeField] private Vector3 relativeVector;
+    [SerializeField] private float relativeVectorMagnitude;
+    [SerializeField] private float maxRange = 250f;
+    [SerializeField] private bool lineOfSightClear = false;
 
-    [SerializeField] private float force = 1;
-    [SerializeField] private float maxVelocity = 10f;
+    [SerializeField] private LayerMask obstacleLayer;
 
-    private void Start()
+    private void Update()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.AddForce(transform.forward * force);
-    }
-    
-    private void FixedUpdate()
-    {
-        //rb.AddForce(transform.forward * force);
-        //rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxVelocity);
-        Debug.Log(rb.velocity);
+        relativeVector = target.transform.position - transform.position;
+        relativeVectorMagnitude = relativeVector.magnitude;
+        if (relativeVector.magnitude <= maxRange)
+        {
+            if (Physics.Raycast(transform.position, relativeVector, out RaycastHit hit, maxRange, obstacleLayer))
+            {
+                if (hit.collider != null)
+                {
+                    lineOfSightClear = false;
+                    Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.red);
+                    Debug.Log("Line of sight NOT clear with raycast hitting layer: " + hit.collider.gameObject.layer);
+                }
+                else
+                {
+                    Debug.Log("Error");
+                }
+            }
+            else
+            {
+                lineOfSightClear = true;
+                Debug.DrawRay(transform.position, relativeVector, Color.green);
+                Debug.Log("Line of sight clear!");
+            }
+        }
+        else
+        {
+            Debug.DrawRay(transform.position, transform.forward * maxRange, Color.red);
+            Debug.Log("Out of range!");
+        }
     }
 }
