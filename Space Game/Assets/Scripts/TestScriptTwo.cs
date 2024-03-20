@@ -16,11 +16,11 @@ public class TestScriptTwo : MonoBehaviour
     [SerializeField] private float rollDamping = 20f;
     [SerializeField] private float yawTorque = 25f;
     [SerializeField] private float pitchTorque = 25f;
-    [SerializeField] private float maxYawVelocity = 50f;
-    [SerializeField] private float maxPitchVelocity = 50f;
+    //[SerializeField] private float maxYawVelocity = 50f;
+    //[SerializeField] private float maxPitchVelocity = 50f;
     [SerializeField] private float elevationForce = 100f;
     [SerializeField] private float maxElevationVelocity = 100f;
-    [SerializeField] private float elevationDamping = 0.1f;
+    //[SerializeField] private float elevationDamping = 0.1f;
 
     // Inputs
     private float accelerationInput;
@@ -181,7 +181,7 @@ public class TestScriptTwo : MonoBehaviour
                 rb.AddForce(oppositeVelocity, ForceMode.VelocityChange);
 
                 // Calculate the opposite torque to gradually reduce angular velocity
-                Vector3 oppositeAngularVelocity = -rb.angularVelocity * stabilizationSpeed * Time.deltaTime;
+                Vector3 oppositeAngularVelocity = stabilizationSpeed * Time.deltaTime * -rb.angularVelocity;
                 rb.AddTorque(oppositeAngularVelocity, ForceMode.VelocityChange);
             }
             else if (rb.velocity.magnitude < 10f && rb.velocity != Vector3.zero)

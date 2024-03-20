@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class MissileHandler : MonoBehaviour
 {
-    [SerializeField] private GameObject targetObject;
-    [SerializeField] private string targetTag = "Team 1";
+    [SerializeField] private RadarCheck radarCheck;
 
-    [SerializeField]
+    [SerializeField] private GameObject lockedObject;
+
     private enum MissileState
     {
         Dropping,
@@ -30,7 +30,8 @@ public class MissileHandler : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        targetObject = GameObject.FindGameObjectWithTag(targetTag);
+        radarCheck = FindObjectOfType<RadarCheck>();
+        lockedObject = radarCheck.targetObject;
         StartCoroutine(DropPhaseEndBoostPhaseStart(dropDuration));
     }
 
@@ -68,7 +69,7 @@ public class MissileHandler : MonoBehaviour
 
     private void Home()
     {
-        transform.LookAt(targetObject.transform);
+        transform.LookAt(lockedObject.transform);
         rb.AddForce(transform.forward * homeForce);
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxVelocity);
     }

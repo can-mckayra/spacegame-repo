@@ -6,7 +6,7 @@ public class TestScript : MonoBehaviour
 {
     [SerializeField] private GameObject target;
     [SerializeField] private Vector3 relativeVector;
-    [SerializeField] private float relativeVectorMagnitude;
+    //[SerializeField] private float relativeVectorMagnitude;
     [SerializeField] private float maxRange = 250f;
     [SerializeField] private bool lineOfSightClear = false;
 
@@ -15,7 +15,7 @@ public class TestScript : MonoBehaviour
     private void Update()
     {
         relativeVector = target.transform.position - transform.position;
-        relativeVectorMagnitude = relativeVector.magnitude;
+        //relativeVectorMagnitude = relativeVector.magnitude;
         if (relativeVector.magnitude <= maxRange)
         {
             if (Physics.Raycast(transform.position, relativeVector, out RaycastHit hit, maxRange, obstacleLayer))

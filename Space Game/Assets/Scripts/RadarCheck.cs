@@ -1,21 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RadarCheck : MonoBehaviour
 {
-    public MissileSpawner missileSpawner;
+    [SerializeField] private Player player;
+    [SerializeField] private MissileSpawner missileSpawner;
 
-    // Line of sight checkers
+    public GameObject targetObject;
+    //public int targetPlayerID;
+
     [SerializeField] private bool lineOfSightClear = false;
-    [SerializeField] private GameObject target = null;
     [SerializeField] private Vector3 relativeVector;
-    [SerializeField] private float relativeVectorMagnitude;
-    [SerializeField] private float maxRange = 1500f;
+    [SerializeField] private float raycastMaxRange = 1500f;
     [SerializeField] private LayerMask obstacleLayer;
 
     private void Update()
     {
+        if (targetObject != null)
+        {
+            LineOfSightCheck();
+        }
         if (missileSpawner != null)
         {
             if (lineOfSightClear)
@@ -31,58 +37,66 @@ public class RadarCheck : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Team 1"))
+        if (other.gameObject.layer == 11 || other.gameObject.layer == 12)
         {
-            target = other.gameObject;
+            if (other.gameObject.layer != player.teamID + 10)
+            {
+                targetObject = other.gameObject;
+                //targetPlayerID = other.gameObject.GetComponent<Player>().playerID;
+            }
         }
     }
 
-
+    /*
     private void OnTriggerStay(Collider other)
     {
         LineOfSightCheck();
     }
+    */
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Team 1"))
+        if (other.gameObject.layer == 11 || other.gameObject.layer == 12)
         {
-            target = null;
+            if (other.gameObject.layer != player.teamID + 10)
+            {
+                targetObject = null;
+                lineOfSightClear = false;
+            }
         }
     }
-
+    
     private void LineOfSightCheck()
     {
-        if (target != null)
+        if (targetObject != null)
         {
-            relativeVector = target.transform.position - transform.position;
-            relativeVectorMagnitude = relativeVector.magnitude;
-            if (relativeVector.magnitude <= maxRange)
+            relativeVector = targetObject.transform.position - transform.position;
+            if (relativeVector.magnitude <= raycastMaxRange)
             {
-                if (Physics.Raycast(transform.position, relativeVector, out RaycastHit hit, maxRange, obstacleLayer))
+                if (Physics.Raycast(transform.position, relativeVector, out RaycastHit hit, raycastMaxRange, obstacleLayer))
                 {
                     if (hit.collider != null)
                     {
                         lineOfSightClear = false;
                         Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.red);
-                        Debug.Log("Line of sight NOT clear with raycast hitting layer: " + hit.collider.gameObject.layer);
+                        //Debug.Log("Line of sight NOT clear with raycast hitting layer: " + hit.collider.gameObject.layer);
                     }
                     else
                     {
-                        Debug.Log("Error");
+                        //Debug.Log("Error");
                     }
                 }
                 else
                 {
                     lineOfSightClear = true;
                     Debug.DrawRay(transform.position, relativeVector, Color.green);
-                    Debug.Log("Line of sight clear!");
+                    //Debug.Log("Line of sight clear!");
                 }
             }
             else
             {
-                Debug.DrawRay(transform.position, transform.forward * maxRange, Color.red);
-                Debug.Log("Out of range!");
+                Debug.DrawRay(transform.position, transform.forward * raycastMaxRange, Color.red);
+                //Debug.Log("Out of range!");
             }
         }
     }

@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class ThirdPersonCamera : MonoBehaviour
 {
+    /*
     public Transform target; // Reference to the spaceship GameObject
     public Vector3 offset = new Vector3(0f, 2f, -5f); // Offset from the spaceship
 
@@ -26,5 +28,16 @@ public class ThirdPersonCamera : MonoBehaviour
 
         // Smoothly rotate the camera towards the desired rotation
         transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, damping * Time.deltaTime);
+    }
+    */
+
+    private Camera mainCamera;
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            mainCamera.enabled = false;
+        }
     }
 }
