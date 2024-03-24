@@ -31,13 +31,17 @@ public class ThirdPersonCamera : MonoBehaviour
     }
     */
 
-    private Camera mainCamera;
+    [SerializeField] private Camera mainCamera;
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.V))
         {
             mainCamera.enabled = false;
+        }
+        else if (Input.GetKeyUp(KeyCode.V))
+        {
+            mainCamera.enabled = true;
         }
     }
 }

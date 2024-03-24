@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6038505942011092553
 Transform:
   m_ObjectHideFlags: 0
@@ -239,5 +239,6 @@ MonoBehaviour:
   dropForce: 0.5
   boostDuration: 1
   boostForce: 1.5
-  homeForce: 10
-  maxVelocity: 100
+  homeForce: 20
+  maxVelocity: 200
+  rotationSpeed: 100

@@ -24,6 +24,7 @@ public class MissileHandler : MonoBehaviour
     [SerializeField] private float boostForce = 1.5f;
     [SerializeField] private float homeForce = 10f;
     [SerializeField] private float maxVelocity = 100f;
+    [SerializeField] private float rotationSpeed = 100f;
 
     private Rigidbody rb;
 
@@ -50,7 +51,7 @@ public class MissileHandler : MonoBehaviour
                 break;
         }
 
-        //Debug.Log(rb.velocity.magnitude);
+        Debug.Log(rb.velocity);
     }
 
     private void Drop()
@@ -69,7 +70,15 @@ public class MissileHandler : MonoBehaviour
 
     private void Home()
     {
-        transform.LookAt(lockedObject.transform);
+        //transform.LookAt(lockedObject.transform);
+
+        // Calculate the direction to the target
+        Vector3 targetDirection = lockedObject.transform.position - transform.position;
+        Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+
+        // Smoothly rotate towards the target
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
         rb.AddForce(transform.forward * homeForce);
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxVelocity);
     }
