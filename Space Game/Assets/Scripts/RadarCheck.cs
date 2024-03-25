@@ -6,7 +6,7 @@ using UnityEngine;
 public class RadarCheck : MonoBehaviour
 {
     [SerializeField] private Player player;
-    [SerializeField] private MissileSpawner missileSpawner;
+    //[SerializeField] private MissileSpawner missileSpawner;
 
     public GameObject targetObject;
     //public int targetPlayerID;
@@ -16,22 +16,21 @@ public class RadarCheck : MonoBehaviour
     [SerializeField] private float raycastMaxRange = 1500f;
     [SerializeField] private LayerMask obstacleLayer;
 
+    public bool targetLocked = false;
+
     private void Update()
     {
         if (targetObject != null)
         {
             LineOfSightCheck();
         }
-        if (missileSpawner != null)
+        if (lineOfSightClear)
         {
-            if (lineOfSightClear)
-            {
-                missileSpawner.targetLocked = true;
-            }
-            else
-            {
-                missileSpawner.targetLocked = false;
-            }
+            targetLocked = true;
+        }
+        else
+        {
+            targetLocked = false;
         }
     }
 

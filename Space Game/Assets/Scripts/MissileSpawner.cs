@@ -1,25 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 public class MissileSpawner : MonoBehaviour
 {
+    [SerializeField] private RadarCheck radarCheck;
+
     [SerializeField] private GameObject missilePrefab;
     [SerializeField] private Transform launchPoint; // The point under the spaceship where the missile will be instantiated
 
     public bool targetLocked = false;
 
+    public float spaceshipVelocityMagnitude;
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V) && targetLocked == true)
+        if (Input.GetKeyDown(KeyCode.V) && radarCheck != null)
         {
-            SpawnMissile();
-            Debug.Log("Target locked! Firing!");
+            if (radarCheck.targetLocked == true)
+            {
+                SpawnMissile();
+                Debug.Log("Target locked! Firing!");
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.V) && targetLocked == false)
+        else if (Input.GetKeyDown(KeyCode.V) && radarCheck != null)
         {
-            Debug.Log("Target not found!");
+            if (radarCheck.targetLocked == false)
+            {
+                Debug.Log("Target not found!");
+            }
         }
+    }
+
+    private void FixedUpdate()
+    {
+        spaceshipVelocityMagnitude = GetComponent<Rigidbody>().velocity.magnitude;
     }
 
     private void SpawnMissile()

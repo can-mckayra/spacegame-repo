@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class EnemyOutliner : MonoBehaviour
 {
+    [SerializeField] private RadarCheck radarCheck;
+
     public GameObject enemySpacecraftObject;
     public RectTransform enemySpacecraftOutlineUI;
+    public RectTransform enemySpacecraftInRangeOutlineUI;
     public GameObject enemyMissileObject;
     public RectTransform enemyMissileOutlineUI;
 
@@ -30,6 +33,7 @@ public class EnemyOutliner : MonoBehaviour
         if (cameraRelevant != null)
         {
             EnemySpacecraftOutliner();
+            EnemySpacecraftInRangeOutliner();
             //EnemyMissileOutliner();
             FriendlySpaceCraftOutliner();
             FriendlyMissileOutliner();
@@ -40,6 +44,8 @@ public class EnemyOutliner : MonoBehaviour
     {
         if (enemySpacecraftObject != null && enemySpacecraftOutlineUI != null)
         {
+            enemySpacecraftInRangeOutlineUI.gameObject.SetActive(false);
+
             Vector3 enemySpacecraftScreenPosition = cameraRelevant.WorldToScreenPoint(enemySpacecraftObject.transform.position);
 
             if (enemySpacecraftScreenPosition.z < 0)
@@ -60,6 +66,40 @@ public class EnemyOutliner : MonoBehaviour
             }
 
             enemySpacecraftOutlineUI.position = enemySpacecraftScreenPosition;
+        }
+    }
+
+    private void EnemySpacecraftInRangeOutliner()
+    {
+        if (radarCheck.targetLocked == true)
+        {
+            if (enemySpacecraftObject != null && enemySpacecraftInRangeOutlineUI != null && enemySpacecraftOutlineUI != null)
+            {
+                Vector3 enemySpacecraftScreenPosition = cameraRelevant.WorldToScreenPoint(enemySpacecraftObject.transform.position);
+
+                if (enemySpacecraftScreenPosition.z < 0)
+                {
+                    enemySpacecraftInRangeOutlineUI.gameObject.SetActive(false);
+                }
+                else if (enemySpacecraftScreenPosition.z >= 0)
+                {
+                    enemySpacecraftInRangeOutlineUI.gameObject.SetActive(true);
+                }
+
+                if (enemySpacecraftScreenPosition.z < 0 || enemySpacecraftScreenPosition.z > 998 || enemySpacecraftScreenPosition.x < 0 || enemySpacecraftScreenPosition.x > Screen.width || enemySpacecraftScreenPosition.y < 0 || enemySpacecraftScreenPosition.y > Screen.height)
+                {
+                    // If off-screen, clamp the screen position to within the screen bounds
+                    enemySpacecraftScreenPosition.x = Mathf.Clamp(enemySpacecraftScreenPosition.x, 0, Screen.width);
+                    enemySpacecraftScreenPosition.y = Mathf.Clamp(enemySpacecraftScreenPosition.y, 0, Screen.height);
+                    enemySpacecraftScreenPosition.z = Mathf.Clamp(enemySpacecraftScreenPosition.y, 0, 999);
+                }
+
+                enemySpacecraftInRangeOutlineUI.position = enemySpacecraftScreenPosition;
+            }
+        }
+        else
+        {
+            enemySpacecraftInRangeOutlineUI.gameObject.SetActive(false);
         }
     }
 
