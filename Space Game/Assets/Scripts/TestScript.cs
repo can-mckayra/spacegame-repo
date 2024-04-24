@@ -21,7 +21,7 @@ public class TestScript : MonoBehaviour
     [SerializeField] private float elevationForce = 100f;
     [SerializeField] private float maxElevationVelocity = 100f;
     //[SerializeField] private float elevationDamping = 0.1f;
-
+    
     // Inputs
     private float accelerationInput;
     private float rollInput;
@@ -82,8 +82,6 @@ public class TestScript : MonoBehaviour
 
         Stabilize();
 
-        AxialSpeedLimiters();
-
         // Get the velocity of the Rigidbody in world space
         worldVelocity = rb.velocity;
 
@@ -96,35 +94,14 @@ public class TestScript : MonoBehaviour
         //Debug.Log("X: " + localVelocity.x.ToString("F2") + "\t\t" + "Y: " + localVelocity.y.ToString("F2") + "\t\t" + "Z: " + localVelocity.z.ToString("F2"));
         //Debug.Log(currentForwardSpeed);
         //Debug.Log(rb.angularVelocity);
-        //Debug.Log(rb.velocity);
         Debug.Log(localVelocity);
-    }
-
-    void AxialSpeedLimiters()
-    {
-        if (localVelocity.z > maxForwardVelocity)
-        {
-            Debug.Log("Forward Speed Limit Exceeded!");
-            localVelocity = new Vector3(localVelocity.x, localVelocity.y, maxForwardVelocity);
-            rb.velocity = transform.TransformDirection(localVelocity);
-        }
-        if (localVelocity.z < -maxBackwardVelocity)
-        {
-            Debug.Log("Backward Speed Limit Exceeded!");
-            localVelocity = new Vector3(localVelocity.x, localVelocity.y, -maxBackwardVelocity);
-            rb.velocity = transform.TransformDirection(localVelocity);
-        }
-
-        if (localVelocity.y > maxElevationVelocity)
-        {
-            Debug.Log("Elevation Speed Limit Exceeded!");
-            localVelocity = new Vector3(localVelocity.x, maxElevationVelocity, localVelocity.z);
-            rb.velocity = transform.TransformDirection(localVelocity);
-        }
     }
 
     void HandleAcceleration()
     {
+        Vector3 forwardAcceleration = new(0.0f, 0.0f, maxForwardVelocity);
+        Vector3 backwardAcceleration = new(0.0f, 0.0f, maxBackwardVelocity);
+
         if (accelerationInput > 0)
         {
             rb.AddForce(accelerationForce * accelerationInput * transform.forward);
@@ -134,7 +111,12 @@ public class TestScript : MonoBehaviour
         {
             rb.AddForce(accelerationInput * decelerationForce * transform.forward); // Slower deceleration
             //rb.velocity = Vector3.ClampMagnitude(rb.velocity, localVelocity.z >= 0 ? maxForwardVelocity : maxBackwardVelocity);
-            //rb.velocity = Vector3.ClampMagnitude(rb.velocity, localVelocity.z >= 0 ? maxForwardVelocity : maxBackwardVelocity);
+            
+            if (localVelocity.z < 0 && localVelocity.z > -maxBackwardVelocity + -1/*?*/)
+            {
+                Debug.Log("-50 < z < 0");
+                rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxBackwardVelocity);
+            }
         }
 
         // Clamp velocity after applying forces

@@ -601,11 +601,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 379679249}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &401470696 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4941797644383189701, guid: a526ba345d53d5e46918d646fdcc5b94, type: 3}
-  m_PrefabInstance: {fileID: 7901874787262806431}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &462788611
 GameObject:
   m_ObjectHideFlags: 0
@@ -3590,6 +3585,7 @@ GameObject:
   - component: {fileID: 2051204371}
   - component: {fileID: 2051204376}
   - component: {fileID: 2051204377}
+  - component: {fileID: 2051204378}
   m_Layer: 11
   m_Name: Cube
   m_TagString: Team 1
@@ -3722,8 +3718,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfcbf451626e35b4ebaf9cde90cb684a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 401470696}
-  rotationSpeed: 100
+  accelerationForce: 200
+  decelerationForce: 100
+  maxForwardVelocity: 250
+  maxBackwardVelocity: 50
+  rollTorque: 20
+  rollDamping: 20
+  yawTorque: 25
+  pitchTorque: 25
+  elevationForce: 100
+  maxElevationVelocity: 100
+  yawPitchLocked: 1
+  crosshair: {fileID: 0}
+  crosshairMultiplier: 10
+  normalizeMagnitude: 100
+  radius: 10000
+  stabilizationSpeed: 1.5
+--- !u!114 &2051204378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2051204370}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7860e166e7238844f82a9fb6b3b5f7ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forwardForce: 50
+  accelerationForce: 200
+  decelerationForce: 100
+  maxForwardVelocity: 250
+  maxBackwardVelocity: 50
+  elevationForce: 100
+  maxElevationVelocity: 100
 --- !u!224 &1247990073629924209 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 120844727546915787, guid: 10dc26b42184c954385c0699c415051b, type: 3}
@@ -4115,6 +4144,10 @@ PrefabInstance:
       propertyPath: crosshair
       value: 
       objectReference: {fileID: 1975751191}
+    - target: {fileID: 2973044425725041173, guid: a526ba345d53d5e46918d646fdcc5b94, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3144412677790269889, guid: a526ba345d53d5e46918d646fdcc5b94, type: 3}
       propertyPath: radarCheck
       value: 
@@ -4123,6 +4156,14 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 2051204370}
+    - target: {fileID: 4356304732278892553, guid: a526ba345d53d5e46918d646fdcc5b94, type: 3}
+      propertyPath: crosshair
+      value: 
+      objectReference: {fileID: 1975751191}
+    - target: {fileID: 4356304732278892553, guid: a526ba345d53d5e46918d646fdcc5b94, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4941797644383189701, guid: a526ba345d53d5e46918d646fdcc5b94, type: 3}
       propertyPath: m_Name
       value: StarSparrow1
@@ -4135,6 +4176,10 @@ PrefabInstance:
       propertyPath: crosshair
       value: 
       objectReference: {fileID: 1975751191}
+    - target: {fileID: 8122107057459423612, guid: a526ba345d53d5e46918d646fdcc5b94, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8976812835307352954, guid: a526ba345d53d5e46918d646fdcc5b94, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 public class SpaceshipController : MonoBehaviour
@@ -20,8 +19,8 @@ public class SpaceshipController : MonoBehaviour
     //[SerializeField] private float maxYawVelocity = 50f;
     //[SerializeField] private float maxPitchVelocity = 50f;
     [SerializeField] private float elevationForce = 100f;
-    //[SerializeField] private float maxElevationVelocity = 100f;
-    [SerializeField] private float elevationDamping = 0.1f;
+    [SerializeField] private float maxElevationVelocity = 100f;
+    //[SerializeField] private float elevationDamping = 0.1f;
 
     // Inputs
     private float accelerationInput;
@@ -42,6 +41,10 @@ public class SpaceshipController : MonoBehaviour
     private Vector3 crosshairOrigin;
 
     [SerializeField] private float stabilizationSpeed = 1.5f;
+
+    // New
+    private Vector3 worldVelocity;
+    private Vector3 localVelocity;
 
     void Start()
     {
@@ -71,6 +74,7 @@ public class SpaceshipController : MonoBehaviour
 
     void FixedUpdate()
     {
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxForwardVelocity);
         HandleAcceleration();
         HandleRoll();
         HandleYawAndPitch();
@@ -78,9 +82,19 @@ public class SpaceshipController : MonoBehaviour
 
         Stabilize();
 
-        Debug.Log(rb.velocity.magnitude);
+        // Get the velocity of the Rigidbody in world space
+        worldVelocity = rb.velocity;
+
+        // Convert the world-space velocity to local space
+        localVelocity = transform.InverseTransformDirection(worldVelocity);
+
+        // Output the local z-axis speed
+        //Debug.Log("Local Z-Axis Speed: " + localZSpeed);
+
+        //Debug.Log("X: " + localVelocity.x.ToString("F2") + "\t\t" + "Y: " + localVelocity.y.ToString("F2") + "\t\t" + "Z: " + localVelocity.z.ToString("F2"));
         //Debug.Log(currentForwardSpeed);
         //Debug.Log(rb.angularVelocity);
+        Debug.Log(localVelocity);
     }
 
     void HandleAcceleration()
@@ -88,14 +102,22 @@ public class SpaceshipController : MonoBehaviour
         if (accelerationInput > 0)
         {
             rb.AddForce(accelerationForce * accelerationInput * transform.forward);
+            //rb.velocity = Vector3.ClampMagnitude(rb.velocity, localVelocity.z < 0 ? maxForwardVelocity : maxBackwardVelocity);
         }
         else if (accelerationInput < 0)
         {
             rb.AddForce(accelerationInput * decelerationForce * transform.forward); // Slower deceleration
+            //rb.velocity = Vector3.ClampMagnitude(rb.velocity, localVelocity.z >= 0 ? maxForwardVelocity : maxBackwardVelocity);
+
+            if (localVelocity.z < 0 && localVelocity.z > -maxBackwardVelocity + -1/*?*/)
+            {
+                Debug.Log("-50 < z < 0");
+                rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxBackwardVelocity);
+            }
         }
 
         // Clamp velocity after applying forces
-        rb.velocity = Vector3.ClampMagnitude(rb.velocity, accelerationInput >= 0 ? maxForwardVelocity : maxBackwardVelocity);
+        //rb.velocity = Vector3.ClampMagnitude(rb.velocity, accelerationInput >= 0 ? maxForwardVelocity : maxBackwardVelocity);
     }
 
     void HandleRoll()
@@ -158,13 +180,21 @@ public class SpaceshipController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftControl))
         {
-            // Calculate the opposite force to gradually reduce velocity
-            Vector3 oppositeVelocity = stabilizationSpeed * Time.deltaTime * -rb.velocity;
-            rb.AddForce(oppositeVelocity, ForceMode.VelocityChange);
+            if (rb.velocity.magnitude >= 10.0f)
+            {
+                // Calculate the opposite force to gradually reduce velocity
+                Vector3 oppositeVelocity = stabilizationSpeed * Time.deltaTime * -rb.velocity;
+                rb.AddForce(oppositeVelocity, ForceMode.VelocityChange);
 
-            // Calculate the opposite torque to gradually reduce angular velocity
-            Vector3 oppositeAngularVelocity = stabilizationSpeed * Time.deltaTime * -rb.angularVelocity;
-            rb.AddTorque(oppositeAngularVelocity, ForceMode.VelocityChange);
+                // Calculate the opposite torque to gradually reduce angular velocity
+                Vector3 oppositeAngularVelocity = stabilizationSpeed * Time.deltaTime * -rb.angularVelocity;
+                rb.AddTorque(oppositeAngularVelocity, ForceMode.VelocityChange);
+            }
+            else if (rb.velocity.magnitude < 10f && rb.velocity != Vector3.zero)
+            {
+
+                rb.velocity = Vector3.zero;
+            }
         }
     }
 }

@@ -1428,9 +1428,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b08d7450030d04283cf8681e631ebb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  radarCheck: {fileID: 0}
   missilePrefab: {fileID: 7853537531428807792, guid: 7c733789cefe1504e863011d716228c9, type: 3}
   launchPoint: {fileID: 7934759304655379207}
   targetLocked: 0
+  spaceshipVelocityMagnitude: 0
 --- !u!114 &4356304732278892553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1443,13 +1445,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfcbf451626e35b4ebaf9cde90cb684a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  relativeVector: {x: 0, y: 0, z: 0}
-  maxRange: 250
-  lineOfSightClear: 0
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 1024
+  accelerationForce: 200
+  decelerationForce: 100
+  maxForwardVelocity: 250
+  maxBackwardVelocity: 50
+  rollTorque: 20
+  rollDamping: 20
+  yawTorque: 25
+  pitchTorque: 25
+  elevationForce: 100
+  maxElevationVelocity: 100
+  yawPitchLocked: 1
+  crosshair: {fileID: 0}
+  crosshairMultiplier: 10
+  normalizeMagnitude: 100
+  radius: 10000
+  stabilizationSpeed: 1.5
 --- !u!114 &2973044425725041173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1949,6 +1960,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a608edfe1fdb943908d454b7a5d471, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
 --- !u!20 &6494743060758626214
 Camera:
   m_ObjectHideFlags: 0
