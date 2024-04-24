@@ -6,198 +6,124 @@ public class TestScript : MonoBehaviour
 {
     private Rigidbody rb;
 
-    [Header("Force and Velocity Controls")]
+    [SerializeField] private float forwardForce = 50.0f;
+
     [SerializeField] private float accelerationForce = 200f;
     [SerializeField] private float decelerationForce = 100f;
     [SerializeField] private float maxForwardVelocity = 250f;
     [SerializeField] private float maxBackwardVelocity = 50f;
-    [SerializeField] private float rollTorque = 20f;
-    //public float maxRollVelocity = 500f; reminder to implement angular velocity clamp.
-    [SerializeField] private float rollDamping = 20f;
-    [SerializeField] private float yawTorque = 25f;
-    [SerializeField] private float pitchTorque = 25f;
-    //[SerializeField] private float maxYawVelocity = 50f;
-    //[SerializeField] private float maxPitchVelocity = 50f;
     [SerializeField] private float elevationForce = 100f;
     [SerializeField] private float maxElevationVelocity = 100f;
-    //[SerializeField] private float elevationDamping = 0.1f;
-    
-    // Inputs
+
     private float accelerationInput;
-    private float rollInput;
     private float elevationInput;
-    private float mouseX;
-    private float mouseY;
 
-    [SerializeField] private bool yawPitchLocked = true;
-
-    [Header("Crosshair Handling")]
-    [SerializeField] private RectTransform crosshair;
-    [SerializeField] private float crosshairMultiplier = 10.0f;
-    [SerializeField] private float normalizeMagnitude = 100.0f;
-    [SerializeField] private float radius = 10000.0f;
-
-    private Vector3 screenCenter;
-    private Vector3 crosshairOrigin;
-
-    [SerializeField] private float stabilizationSpeed = 1.5f;
-
-    // New
     private Vector3 worldVelocity;
-    private Vector3 localVelocity;
+    private Vector3 worldToLocalVelocity;
+    private Vector3 localToWorldVelocity;
 
-    void Start()
+    private Vector3 accelerationVector = new(0.0f, 0.0f, 200.0f);
+    private Vector3 decelerationVector = new(0.0f, 0.0f, 100.0f);
+    private Vector3 elevationVector = new(0.0f, 100.0f, 0.0f);
+
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        //rb.maxAngularVelocity = 5f;
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        screenCenter = new(Screen.width / 2f, Screen.height / 2f, 0.0f);
-        crosshairOrigin = screenCenter;
+        //rb.AddForce(new Vector3(0.0f, 0.0f, forwardForce));
     }
 
-    void Update()
+    private void Update()
     {
         accelerationInput = Input.GetAxisRaw("Vertical");
-        rollInput = Input.GetAxisRaw("Horizontal");
         elevationInput = Input.GetAxisRaw("Elevation");
-        mouseX = Input.GetAxis("Mouse X");
-        mouseY = Input.GetAxis("Mouse Y");
-        HandleCrosshair();
-
-        if (Input.GetKeyDown(KeyCode.LeftAlt))
-        {
-            yawPitchLocked = !yawPitchLocked;
-        }
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxForwardVelocity);
-        HandleAcceleration();
-        HandleRoll();
-        HandleYawAndPitch();
-        HandleElevation();
-
-        Stabilize();
-
-        // Get the velocity of the Rigidbody in world space
         worldVelocity = rb.velocity;
+        worldToLocalVelocity = transform.InverseTransformDirection(worldVelocity);
+        localToWorldVelocity = transform.TransformDirection(worldToLocalVelocity);
 
-        // Convert the world-space velocity to local space
-        localVelocity = transform.InverseTransformDirection(worldVelocity);
+        //HandleAcceleration();
+        //HandleElevation();
+        HandleMovement();
 
-        // Output the local z-axis speed
-        //Debug.Log("Local Z-Axis Speed: " + localZSpeed);
-
-        //Debug.Log("X: " + localVelocity.x.ToString("F2") + "\t\t" + "Y: " + localVelocity.y.ToString("F2") + "\t\t" + "Z: " + localVelocity.z.ToString("F2"));
-        //Debug.Log(currentForwardSpeed);
-        //Debug.Log(rb.angularVelocity);
-        Debug.Log(localVelocity);
+        Debug.Log("worldVelocity: " + worldVelocity);
+        Debug.Log("worldToLocalVelocity: " + worldToLocalVelocity);
+        Debug.Log("localToWorldVelocity: " + localToWorldVelocity);
     }
 
-    void HandleAcceleration()
+    /*
+    private void HandleAcceleration()
     {
-        Vector3 forwardAcceleration = new(0.0f, 0.0f, maxForwardVelocity);
-        Vector3 backwardAcceleration = new(0.0f, 0.0f, maxBackwardVelocity);
-
-        if (accelerationInput > 0)
+        if (accelerationInput > 0.0f)
         {
-            rb.AddForce(accelerationForce * accelerationInput * transform.forward);
-            //rb.velocity = Vector3.ClampMagnitude(rb.velocity, localVelocity.z < 0 ? maxForwardVelocity : maxBackwardVelocity);
+            rb.AddForce(transform.TransformDirection(accelerationVector));
         }
-        else if (accelerationInput < 0)
+        else if (accelerationInput < 0.0f)
         {
-            rb.AddForce(accelerationInput * decelerationForce * transform.forward); // Slower deceleration
-            //rb.velocity = Vector3.ClampMagnitude(rb.velocity, localVelocity.z >= 0 ? maxForwardVelocity : maxBackwardVelocity);
-            
-            if (localVelocity.z < 0 && localVelocity.z > -maxBackwardVelocity + -1/*?*/)
-            {
-                Debug.Log("-50 < z < 0");
-                rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxBackwardVelocity);
-            }
+            rb.AddForce(transform.TransformDirection(-decelerationVector));
         }
 
-        // Clamp velocity after applying forces
-        //rb.velocity = Vector3.ClampMagnitude(rb.velocity, accelerationInput >= 0 ? maxForwardVelocity : maxBackwardVelocity);
+        Vector3 forwardVelocityVector = new(0.0f, 0.0f, worldToLocalVelocity.z);
+        Vector3 remainingVelocityVector = new(worldToLocalVelocity.x, worldToLocalVelocity.y, 0.0f);
+
+        forwardVelocityVector = Vector3.ClampMagnitude(forwardVelocityVector, maxForwardVelocity);
+        rb.velocity = transform.TransformDirection(forwardVelocityVector + remainingVelocityVector);
     }
 
-    void HandleRoll()
+    private void HandleElevation()
     {
-        rb.AddTorque(-rollInput * rollTorque * transform.forward);
-
-        if (rollInput == 0 && rb.angularVelocity.magnitude > 0)
+        if (elevationInput > 0.0f)
         {
-            rb.AddTorque(-rb.angularVelocity * rollDamping);
+            rb.AddForce(transform.TransformDirection(elevationVector));
         }
-    }
-
-    void HandleYawAndPitch()
-    {
-        // Calculate yaw and pitch amounts based on normalized values and speeds
-        float yawAmount = crosshairOrigin.x * yawTorque * Time.deltaTime;
-        float pitchAmount = -crosshairOrigin.y * pitchTorque * Time.deltaTime;
-
-        // Cap yaw and pitch speed (Doesn't work)
-        //float clampedYawAmount = Mathf.Clamp(yawAmount, -maxYawVelocity, maxYawVelocity);
-        //float clampedPitchAmount = Mathf.Clamp(pitchAmount, -maxPitchVelocity, maxPitchVelocity);
-
-        if (!yawPitchLocked)
+        else if (elevationInput < 0.0f)
         {
-            // Apply yaw and pitch torques to the rigidbody
-            rb.AddTorque(transform.up * yawAmount);
-            rb.AddTorque(transform.right * pitchAmount); // Use right instead of -transform.right for inverted pitch
-        }
-    }
-
-    void HandleElevation()
-    {
-        rb.AddForce(elevationForce * elevationInput * transform.up);
-    }
-
-    void HandleCrosshair()
-    {
-        // Get mouse input
-        float x = Input.GetAxis("Mouse X");
-        float y = Input.GetAxis("Mouse Y");
-
-        // Add input to crosshair
-        crosshair.position += new Vector3(x * crosshairMultiplier, y * crosshairMultiplier, 0.0f);
-
-        // Move crosshair to origin to apply circular clamp
-        crosshairOrigin = crosshair.position - screenCenter;
-
-        // Clamp vector magnitude to 10
-        if (crosshairOrigin.sqrMagnitude > radius)
-        {
-            crosshairOrigin.Normalize();
-            crosshairOrigin *= normalizeMagnitude;
+            rb.AddForce(transform.TransformDirection(-elevationVector));
         }
 
-        // Update crosshair position
-        crosshair.position = crosshairOrigin + screenCenter;
+        Vector3 upwardVelocityVector = new(0.0f, worldToLocalVelocity.y, 0.0f);
+        Vector3 remainingVelocityVector = new(worldToLocalVelocity.x, 0.0f, worldToLocalVelocity.z);
+
+        upwardVelocityVector = Vector3.ClampMagnitude(upwardVelocityVector, maxElevationVelocity);
+        rb.velocity = transform.TransformDirection(upwardVelocityVector + remainingVelocityVector);
     }
+    */
 
-    void Stabilize()
+    private void HandleMovement()
     {
-        if (Input.GetKey(KeyCode.LeftControl))
+        if (accelerationInput > 0.0f)
         {
-            if (rb.velocity.magnitude >= 10.0f)
-            {
-                // Calculate the opposite force to gradually reduce velocity
-                Vector3 oppositeVelocity = stabilizationSpeed * Time.deltaTime * -rb.velocity;
-                rb.AddForce(oppositeVelocity, ForceMode.VelocityChange);
-
-                // Calculate the opposite torque to gradually reduce angular velocity
-                Vector3 oppositeAngularVelocity = stabilizationSpeed * Time.deltaTime * -rb.angularVelocity;
-                rb.AddTorque(oppositeAngularVelocity, ForceMode.VelocityChange);
-            }
-            else if (rb.velocity.magnitude < 10f && rb.velocity != Vector3.zero)
-            {
-
-                rb.velocity = Vector3.zero;
-            }
+            rb.AddForce(accelerationForce * transform.forward);
         }
+        else if (accelerationInput < 0.0f)
+        {
+            rb.AddForce(decelerationForce * -transform.forward);
+        }
+
+        //Vector3 forwardVelocityVector = new(0.0f, 0.0f, worldToLocalVelocity.z);
+        //forwardVelocityVector = Vector3.ClampMagnitude(forwardVelocityVector, maxForwardVelocity);
+
+        worldToLocalVelocity.z = Mathf.Clamp(worldToLocalVelocity.z, -maxBackwardVelocity, maxForwardVelocity);
+
+        if (elevationInput > 0.0f)
+        {
+            rb.AddForce(elevationForce * transform.up);
+        }
+        else if (elevationInput < 0.0f)
+        {
+            rb.AddForce(elevationForce * -transform.up);
+        }
+
+        //Vector3 upwardVelocityVector = new(0.0f, worldToLocalVelocity.y, 0.0f);
+        //upwardVelocityVector = Vector3.ClampMagnitude(upwardVelocityVector, maxElevationVelocity);
+
+        worldToLocalVelocity.y = Mathf.Clamp(worldToLocalVelocity.y, -maxElevationVelocity, maxElevationVelocity);
+
+        //Vector3 remainingVelocityVector = new(worldToLocalVelocity.x, 0.0f, 0.0f);
+
+        rb.velocity = transform.TransformDirection(worldToLocalVelocity);
     }
 }

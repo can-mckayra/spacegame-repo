@@ -96,11 +96,11 @@ public class TestScriptTwo : MonoBehaviour
     {
         if (accelerationInput > 0.0f)
         {
-            rb.AddForce(transform.TransformDirection(accelerationVector));
+            rb.AddForce(accelerationForce * transform.forward);
         }
         else if (accelerationInput < 0.0f)
         {
-            rb.AddForce(transform.TransformDirection(-decelerationVector));
+            rb.AddForce(decelerationForce * -transform.forward);
         }
 
         Vector3 forwardVelocityVector = new(0.0f, 0.0f, worldToLocalVelocity.z);
@@ -108,11 +108,11 @@ public class TestScriptTwo : MonoBehaviour
 
         if (elevationInput > 0.0f)
         {
-            rb.AddForce(transform.TransformDirection(elevationVector));
+            rb.AddForce(elevationForce * transform.up);
         }
         else if (elevationInput < 0.0f)
         {
-            rb.AddForce(transform.TransformDirection(-elevationVector));
+            rb.AddForce(elevationForce * -transform.up);
         }
 
         Vector3 upwardVelocityVector = new(0.0f, worldToLocalVelocity.y, 0.0f);
