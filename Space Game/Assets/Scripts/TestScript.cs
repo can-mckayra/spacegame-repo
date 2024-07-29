@@ -4,126 +4,40 @@ using UnityEngine;
 
 public class TestScript : MonoBehaviour
 {
-    private Rigidbody rb;
-
-    [SerializeField] private float forwardForce = 50.0f;
-
-    [SerializeField] private float accelerationForce = 200f;
-    [SerializeField] private float decelerationForce = 100f;
-    [SerializeField] private float maxForwardVelocity = 250f;
-    [SerializeField] private float maxBackwardVelocity = 50f;
-    [SerializeField] private float elevationForce = 100f;
-    [SerializeField] private float maxElevationVelocity = 100f;
-
-    private float accelerationInput;
-    private float elevationInput;
-
-    private Vector3 worldVelocity;
-    private Vector3 worldToLocalVelocity;
-    private Vector3 localToWorldVelocity;
-
-    private Vector3 accelerationVector = new(0.0f, 0.0f, 200.0f);
-    private Vector3 decelerationVector = new(0.0f, 0.0f, 100.0f);
-    private Vector3 elevationVector = new(0.0f, 100.0f, 0.0f);
+    [SerializeField] private GameObject enemyGameObject;
+    [SerializeField] private bool inRadar = false;
+    [SerializeField] private Camera relevantCamera;
+    [SerializeField] private Vector2 screenCenter;
+    [SerializeField] private float radius = 25.0f;
+    [SerializeField] private Vector2 targetScreenCoords;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-
-        //rb.AddForce(new Vector3(0.0f, 0.0f, forwardForce));
+        Debug.Log(radius);
+        screenCenter = new(Screen.width / 2.0f, Screen.height / 2.0f);
     }
 
     private void Update()
     {
-        accelerationInput = Input.GetAxisRaw("Vertical");
-        elevationInput = Input.GetAxisRaw("Elevation");
+        InRadarCheck();
+        //Debug.Log(relevantCamera.WorldToScreenPoint(enemyGameObject.transform.position).x);
+        //Debug.Log((new Vector2(relevantCamera.WorldToScreenPoint(enemyGameObject.transform.position).x, relevantCamera.WorldToScreenPoint(enemyGameObject.transform.position).y) - screenCenter).magnitude);
+        //Debug.Log((targetScreenCoords - screenCenter).magnitude);
     }
 
-    private void FixedUpdate()
+    private void InRadarCheck()
     {
-        worldVelocity = rb.velocity;
-        worldToLocalVelocity = transform.InverseTransformDirection(worldVelocity);
-        localToWorldVelocity = transform.TransformDirection(worldToLocalVelocity);
+        targetScreenCoords = new(relevantCamera.WorldToScreenPoint(enemyGameObject.transform.position).x, relevantCamera.WorldToScreenPoint(enemyGameObject.transform.position).y);
 
-        //HandleAcceleration();
-        //HandleElevation();
-        HandleMovement();
-
-        Debug.Log("worldVelocity: " + worldVelocity);
-        Debug.Log("worldToLocalVelocity: " + worldToLocalVelocity);
-        Debug.Log("localToWorldVelocity: " + localToWorldVelocity);
-    }
-
-    /*
-    private void HandleAcceleration()
-    {
-        if (accelerationInput > 0.0f)
+        if ((targetScreenCoords - screenCenter).magnitude < radius)
         {
-            rb.AddForce(transform.TransformDirection(accelerationVector));
+            //Debug.Log("inRadar");
+            inRadar = true;
         }
-        else if (accelerationInput < 0.0f)
+        else if ((targetScreenCoords - screenCenter).magnitude > radius)
         {
-            rb.AddForce(transform.TransformDirection(-decelerationVector));
+            //Debug.Log("not inRadar");
+            inRadar = false;
         }
-
-        Vector3 forwardVelocityVector = new(0.0f, 0.0f, worldToLocalVelocity.z);
-        Vector3 remainingVelocityVector = new(worldToLocalVelocity.x, worldToLocalVelocity.y, 0.0f);
-
-        forwardVelocityVector = Vector3.ClampMagnitude(forwardVelocityVector, maxForwardVelocity);
-        rb.velocity = transform.TransformDirection(forwardVelocityVector + remainingVelocityVector);
-    }
-
-    private void HandleElevation()
-    {
-        if (elevationInput > 0.0f)
-        {
-            rb.AddForce(transform.TransformDirection(elevationVector));
-        }
-        else if (elevationInput < 0.0f)
-        {
-            rb.AddForce(transform.TransformDirection(-elevationVector));
-        }
-
-        Vector3 upwardVelocityVector = new(0.0f, worldToLocalVelocity.y, 0.0f);
-        Vector3 remainingVelocityVector = new(worldToLocalVelocity.x, 0.0f, worldToLocalVelocity.z);
-
-        upwardVelocityVector = Vector3.ClampMagnitude(upwardVelocityVector, maxElevationVelocity);
-        rb.velocity = transform.TransformDirection(upwardVelocityVector + remainingVelocityVector);
-    }
-    */
-
-    private void HandleMovement()
-    {
-        if (accelerationInput > 0.0f)
-        {
-            rb.AddForce(accelerationForce * transform.forward);
-        }
-        else if (accelerationInput < 0.0f)
-        {
-            rb.AddForce(decelerationForce * -transform.forward);
-        }
-
-        //Vector3 forwardVelocityVector = new(0.0f, 0.0f, worldToLocalVelocity.z);
-        //forwardVelocityVector = Vector3.ClampMagnitude(forwardVelocityVector, maxForwardVelocity);
-
-        worldToLocalVelocity.z = Mathf.Clamp(worldToLocalVelocity.z, -maxBackwardVelocity, maxForwardVelocity);
-
-        if (elevationInput > 0.0f)
-        {
-            rb.AddForce(elevationForce * transform.up);
-        }
-        else if (elevationInput < 0.0f)
-        {
-            rb.AddForce(elevationForce * -transform.up);
-        }
-
-        //Vector3 upwardVelocityVector = new(0.0f, worldToLocalVelocity.y, 0.0f);
-        //upwardVelocityVector = Vector3.ClampMagnitude(upwardVelocityVector, maxElevationVelocity);
-
-        worldToLocalVelocity.y = Mathf.Clamp(worldToLocalVelocity.y, -maxElevationVelocity, maxElevationVelocity);
-
-        //Vector3 remainingVelocityVector = new(worldToLocalVelocity.x, 0.0f, 0.0f);
-
-        rb.velocity = transform.TransformDirection(worldToLocalVelocity);
     }
 }

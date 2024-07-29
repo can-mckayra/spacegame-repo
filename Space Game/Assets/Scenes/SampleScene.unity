@@ -1624,7 +1624,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 1
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -1847,6 +1847,156 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1429668049}
   m_SourcePrefab: {fileID: 100100000, guid: a526ba345d53d5e46918d646fdcc5b94, type: 3}
+--- !u!1 &899337098
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 899337100}
+  - component: {fileID: 899337099}
+  - component: {fileID: 899337101}
+  m_Layer: 0
+  m_Name: LineRenderer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!120 &899337099
+LineRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899337098}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 0
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Positions:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 1}
+  m_Parameters:
+    serializedVersion: 3
+    widthMultiplier: 1
+    widthCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0.04946995
+        value: 0.09836078
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    colorGradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+    numCornerVertices: 0
+    numCapVertices: 0
+    alignment: 0
+    textureMode: 0
+    textureScale: {x: 1, y: 1}
+    shadowBias: 0.5
+    generateLightingData: 0
+  m_MaskInteraction: 0
+  m_UseWorldSpace: 1
+  m_Loop: 0
+  m_ApplyActiveColorSpace: 1
+--- !u!4 &899337100
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899337098}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.1542883, y: 1.7598015, z: -1624.8022}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &899337101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899337098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70b20d2ca148eb645ab7da7f03f7fea9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  circleRenderer: {fileID: 899337099}
 --- !u!1 &955576162
 GameObject:
   m_ObjectHideFlags: 0
@@ -3375,7 +3525,11 @@ GameObject:
   - component: {fileID: 1956647449}
   - component: {fileID: 1956647448}
   - component: {fileID: 1956647447}
+  - component: {fileID: 1956647452}
   - component: {fileID: 1956647451}
+  - component: {fileID: 1956647454}
+  - component: {fileID: 1956647453}
+  - component: {fileID: 1956647455}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3480,9 +3634,167 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1956647446}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 813e172173be5664da603cc90d438a4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radarCheck: {fileID: 1362066435}
+  enemySpacecraftObject: {fileID: 1429668037}
+  enemySpacecraftOutlineUI: {fileID: 2550520285789532691}
+  enemySpacecraftInRangeOutlineUI: {fileID: 1247990073629924209}
+  enemyMissileObject: {fileID: 0}
+  enemyMissileOutlineUI: {fileID: 1797467928}
+  friendlySpacecraftObject: {fileID: 1266193897}
+  friendlySpacecraftOutlineUI: {fileID: 2152420911685239506}
+  friendlyMissileObject: {fileID: 0}
+  friendlyMissileOutlineUI: {fileID: 1601841934}
+  cameraRelevant: {fileID: 152093395}
+--- !u!114 &1956647452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956647446}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfcbf451626e35b4ebaf9cde90cb684a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyGameObject: {fileID: 1429668037}
+  inRadar: 0
+  relevantCamera: {fileID: 152093395}
+  screenCenter: {x: 0, y: 0}
+  radius: 25
+  targetScreenCoords: {x: 0, y: 0}
+--- !u!120 &1956647453
+LineRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956647446}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 0
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Positions:
+  - {x: 1, y: 1, z: 0}
+  - {x: 0, y: 0, z: 0}
+  m_Parameters:
+    serializedVersion: 3
+    widthMultiplier: 1
+    widthCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    colorGradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+    numCornerVertices: 0
+    numCapVertices: 0
+    alignment: 0
+    textureMode: 0
+    textureScale: {x: 1, y: 1}
+    shadowBias: 0.5
+    generateLightingData: 0
+  m_MaskInteraction: 0
+  m_UseWorldSpace: 1
+  m_Loop: 0
+  m_ApplyActiveColorSpace: 1
+--- !u!114 &1956647454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956647446}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70b20d2ca148eb645ab7da7f03f7fea9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  circleRenderer: {fileID: 1956647453}
+--- !u!114 &1956647455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956647446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7860e166e7238844f82a9fb6b3b5f7ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   radarCheck: {fileID: 1362066435}
@@ -3718,13 +4030,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfcbf451626e35b4ebaf9cde90cb684a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardForce: 50
-  accelerationForce: 200
-  decelerationForce: 100
-  maxForwardVelocity: 250
-  maxBackwardVelocity: 50
-  elevationForce: 100
-  maxElevationVelocity: 100
+  enemyGameObject: {fileID: 0}
+  inRadar: 0
+  relevantCamera: {fileID: 0}
+  screenCenter: {x: 0, y: 0}
+  radius: 50
+  targetScreenCoords: {x: 0, y: 0}
 --- !u!114 &2051204378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3737,13 +4048,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7860e166e7238844f82a9fb6b3b5f7ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardForce: 50
-  accelerationForce: 200
-  decelerationForce: 100
-  maxForwardVelocity: 250
-  maxBackwardVelocity: 50
-  elevationForce: 100
-  maxElevationVelocity: 100
+  radarCheck: {fileID: 0}
+  enemySpacecraftObject: {fileID: 0}
+  enemySpacecraftOutlineUI: {fileID: 0}
+  enemySpacecraftInRangeOutlineUI: {fileID: 0}
+  enemyMissileObject: {fileID: 0}
+  enemyMissileOutlineUI: {fileID: 0}
+  friendlySpacecraftObject: {fileID: 0}
+  friendlySpacecraftOutlineUI: {fileID: 0}
+  friendlyMissileObject: {fileID: 0}
+  friendlyMissileOutlineUI: {fileID: 0}
+  cameraRelevant: {fileID: 0}
 --- !u!1 &2110034629 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4941797644383189701, guid: a526ba345d53d5e46918d646fdcc5b94, type: 3}
@@ -4168,6 +4483,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1362066435}
     - target: {fileID: 4356304732278892553, guid: a526ba345d53d5e46918d646fdcc5b94, type: 3}
+      propertyPath: radius
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4356304732278892553, guid: a526ba345d53d5e46918d646fdcc5b94, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 2051204370}
@@ -4179,6 +4498,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4356304732278892553, guid: a526ba345d53d5e46918d646fdcc5b94, type: 3}
+      propertyPath: relevantCamera
+      value: 
+      objectReference: {fileID: 152093395}
+    - target: {fileID: 4356304732278892553, guid: a526ba345d53d5e46918d646fdcc5b94, type: 3}
+      propertyPath: enemyGameObject
+      value: 
+      objectReference: {fileID: 1429668037}
     - target: {fileID: 4941797644383189701, guid: a526ba345d53d5e46918d646fdcc5b94, type: 3}
       propertyPath: m_Name
       value: StarSparrow1
@@ -4237,7 +4564,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9184995561828915536, guid: a526ba345d53d5e46918d646fdcc5b94, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9184995561828915536, guid: a526ba345d53d5e46918d646fdcc5b94, type: 3}
       propertyPath: mainCamera
@@ -4356,3 +4683,4 @@ SceneRoots:
   - {fileID: 717324693}
   - {fileID: 839070612}
   - {fileID: 54768860}
+  - {fileID: 899337100}

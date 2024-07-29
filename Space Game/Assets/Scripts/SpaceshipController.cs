@@ -94,7 +94,7 @@ public class SpaceshipController : MonoBehaviour
         //Debug.Log("X: " + localVelocity.x.ToString("F2") + "\t\t" + "Y: " + localVelocity.y.ToString("F2") + "\t\t" + "Z: " + localVelocity.z.ToString("F2"));
         //Debug.Log(currentForwardSpeed);
         //Debug.Log(rb.angularVelocity);
-        Debug.Log(localVelocity);
+        //Debug.Log(localVelocity);
     }
 
     void HandleAcceleration()

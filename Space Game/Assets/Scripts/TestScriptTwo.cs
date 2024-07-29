@@ -4,122 +4,125 @@ using UnityEngine;
 
 public class TestScriptTwo : MonoBehaviour
 {
-    private Rigidbody rb;
+    [SerializeField] private RadarCheck radarCheck;
 
-    [SerializeField] private float forwardForce = 50.0f;
+    public GameObject enemySpacecraftObject;
+    public RectTransform enemySpacecraftOutlineUI;
+    public RectTransform enemySpacecraftInRangeOutlineUI;
+    public GameObject enemyMissileObject;
+    public RectTransform enemyMissileOutlineUI;
 
-    [SerializeField] private float accelerationForce = 200f;
-    [SerializeField] private float decelerationForce = 100f;
-    [SerializeField] private float maxForwardVelocity = 250f;
-    [SerializeField] private float maxBackwardVelocity = 50f;
-    [SerializeField] private float elevationForce = 100f;
-    [SerializeField] private float maxElevationVelocity = 100f;
+    public GameObject friendlySpacecraftObject;
+    public RectTransform friendlySpacecraftOutlineUI;
+    public GameObject friendlyMissileObject;
+    public RectTransform friendlyMissileOutlineUI;
 
-    private float accelerationInput;
-    private float elevationInput;
-
-    private Vector3 worldVelocity;
-    private Vector3 worldToLocalVelocity;
-    private Vector3 localToWorldVelocity;
-
-    private Vector3 accelerationVector = new(0.0f, 0.0f, 200.0f);
-    private Vector3 decelerationVector = new(0.0f, 0.0f, 100.0f);
-    private Vector3 elevationVector = new(0.0f, 100.0f, 0.0f);
+    public Camera cameraRelevant;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-
-        //rb.AddForce(new Vector3(0.0f, 0.0f, forwardForce));
+        friendlyMissileOutlineUI.gameObject.SetActive(false);
     }
 
     private void Update()
     {
-        accelerationInput = Input.GetAxisRaw("Vertical");
-        elevationInput = Input.GetAxisRaw("Elevation");
+        //enemyMissileObject = FindObjectOfType<MissileHandler>().gameObject;
+        friendlyMissileObject = GameObject.FindWithTag("Missile");
+
+        if (cameraRelevant != null)
+        {
+            Outliner(enemySpacecraftObject, enemySpacecraftOutlineUI, enemySpacecraftInRangeOutlineUI);
+            //InRangeOutliner(enemySpacecraftObject, enemySpacecraftOutlineUI, enemySpacecraftInRangeOutlineUI);
+            //Outliner(enemyMissileObject, enemyMissileOutlineUI);
+            Outliner(friendlySpacecraftObject, friendlySpacecraftOutlineUI, null);
+            Outliner(friendlyMissileObject, friendlyMissileOutlineUI, null);
+        }
     }
 
-    private void FixedUpdate()
+    private void Outliner(GameObject _gameObject, RectTransform _objectOutlineUI, RectTransform _objectInRangeOutlineUI)
     {
-        worldVelocity = rb.velocity;
-        worldToLocalVelocity = transform.InverseTransformDirection(worldVelocity);
-        localToWorldVelocity = transform.TransformDirection(worldToLocalVelocity);
+        if (_gameObject != null && _objectOutlineUI != null)
+        {
+            Vector3 _objectScreenPosition = cameraRelevant.WorldToScreenPoint(_gameObject.transform.position);
 
-        //HandleAcceleration();
-        //HandleElevation();
-        HandleMovement();
-        
-        Debug.Log("worldVelocity: " + worldVelocity);
-        Debug.Log("worldToLocalVelocity: " + worldToLocalVelocity);
-        Debug.Log("localToWorldVelocity: " + localToWorldVelocity);
+            if (_objectScreenPosition.z < 0)
+            {
+                _objectOutlineUI.gameObject.SetActive(false);
+            }
+            else if (_objectScreenPosition.z >= 0)
+            {
+                _objectOutlineUI.gameObject.SetActive(true);
+            }
+
+            if (radarCheck.targetLocked == true)
+            {
+                if (_gameObject != null && _objectInRangeOutlineUI != null)
+                {
+                    if (_objectScreenPosition.z < 0)
+                    {
+                        _objectInRangeOutlineUI.gameObject.SetActive(false);
+                    }
+                    else if (_objectScreenPosition.z >= 0)
+                    {
+                        _objectInRangeOutlineUI.gameObject.SetActive(true);
+                    }
+                }
+            }
+            else
+            {
+                if (_objectInRangeOutlineUI != null)
+                {
+                    _objectInRangeOutlineUI.gameObject.SetActive(false);
+                }
+            }
+
+            if (_objectScreenPosition.z < 0 || _objectScreenPosition.z > 998 || _objectScreenPosition.x < 0 || _objectScreenPosition.x > Screen.width || _objectScreenPosition.y < 0 || _objectScreenPosition.y > Screen.height)
+            {
+                _objectScreenPosition.x = Mathf.Clamp(_objectScreenPosition.x, 0, Screen.width);
+                _objectScreenPosition.y = Mathf.Clamp(_objectScreenPosition.y, 0, Screen.height);
+                _objectScreenPosition.z = Mathf.Clamp(_objectScreenPosition.z, 0, 999);
+            }
+
+            _objectOutlineUI.position = _objectScreenPosition;
+
+            if (_objectInRangeOutlineUI != null)
+            {
+                _objectInRangeOutlineUI.position = _objectScreenPosition;
+            }
+        }
+        if (_gameObject == null)
+        {
+            _objectOutlineUI.gameObject.SetActive(false);
+        }
     }
-
     /*
-    private void HandleAcceleration()
+    private void InRangeOutliner(GameObject _gameObject, RectTransform _objectOutlineUI, RectTransform _objectInRangeOutlineUI)
     {
-        if (accelerationInput > 0.0f)
+        if (radarCheck.targetLocked == true)
         {
-            rb.AddForce(transform.TransformDirection(accelerationVector));
+            if (_gameObject != null && _objectInRangeOutlineUI != null)
+            {
+                Vector3 _objectScreenPosition = cameraRelevant.WorldToScreenPoint(_gameObject.transform.position);
+
+                if (_objectScreenPosition.z < 0)
+                {
+                    _objectInRangeOutlineUI.gameObject.SetActive(false);
+                }
+                else if (_objectScreenPosition.z >= 0)
+                {
+                    _objectInRangeOutlineUI.gameObject.SetActive(true);
+                }
+
+                if (_objectScreenPosition.z < 0 || _objectScreenPosition.z > 998 || _objectScreenPosition.x < 0 || _objectScreenPosition.x > Screen.width || _objectScreenPosition.y < 0 || _objectScreenPosition.y > Screen.height)
+                {
+                    _objectScreenPosition.x = Mathf.Clamp(_objectScreenPosition.x, 0, Screen.width);
+                    _objectScreenPosition.y = Mathf.Clamp(_objectScreenPosition.y, 0, Screen.height);
+                    _objectScreenPosition.z = Mathf.Clamp(_objectScreenPosition.z, 0, 999);
+                }
+
+                _objectInRangeOutlineUI.position = _objectScreenPosition;
+            }
         }
-        else if (accelerationInput < 0.0f)
-        {
-            rb.AddForce(transform.TransformDirection(-decelerationVector));
-        }
-
-        Vector3 forwardVelocityVector = new(0.0f, 0.0f, worldToLocalVelocity.z);
-        Vector3 remainingVelocityVector = new(worldToLocalVelocity.x, worldToLocalVelocity.y, 0.0f);
-
-        forwardVelocityVector = Vector3.ClampMagnitude(forwardVelocityVector, maxForwardVelocity);
-        rb.velocity = transform.TransformDirection(forwardVelocityVector + remainingVelocityVector);
-    }
-
-    private void HandleElevation()
-    {
-        if (elevationInput > 0.0f)
-        {
-            rb.AddForce(transform.TransformDirection(elevationVector));
-        }
-        else if (elevationInput < 0.0f)
-        {
-            rb.AddForce(transform.TransformDirection(-elevationVector));
-        }
-
-        Vector3 upwardVelocityVector = new(0.0f, worldToLocalVelocity.y, 0.0f);
-        Vector3 remainingVelocityVector = new(worldToLocalVelocity.x, 0.0f, worldToLocalVelocity.z);
-
-        upwardVelocityVector = Vector3.ClampMagnitude(upwardVelocityVector, maxElevationVelocity);
-        rb.velocity = transform.TransformDirection(upwardVelocityVector + remainingVelocityVector);
     }
     */
-
-    private void HandleMovement()
-    {
-        if (accelerationInput > 0.0f)
-        {
-            rb.AddForce(accelerationForce * transform.forward);
-        }
-        else if (accelerationInput < 0.0f)
-        {
-            rb.AddForce(decelerationForce * -transform.forward);
-        }
-
-        Vector3 forwardVelocityVector = new(0.0f, 0.0f, worldToLocalVelocity.z);
-        forwardVelocityVector = Vector3.ClampMagnitude(forwardVelocityVector, maxForwardVelocity);
-
-        if (elevationInput > 0.0f)
-        {
-            rb.AddForce(elevationForce * transform.up);
-        }
-        else if (elevationInput < 0.0f)
-        {
-            rb.AddForce(elevationForce * -transform.up);
-        }
-
-        Vector3 upwardVelocityVector = new(0.0f, worldToLocalVelocity.y, 0.0f);
-        upwardVelocityVector = Vector3.ClampMagnitude(upwardVelocityVector, maxElevationVelocity);
-        
-        Vector3 remainingVelocityVector = new(worldToLocalVelocity.x, 0.0f, 0.0f);
-
-        rb.velocity = transform.TransformDirection(forwardVelocityVector + upwardVelocityVector + remainingVelocityVector);
-    }
 }

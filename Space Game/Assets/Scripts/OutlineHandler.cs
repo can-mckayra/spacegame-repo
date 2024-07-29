@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyOutliner : MonoBehaviour
+public class OutlineHandler : MonoBehaviour
 {
     [SerializeField] private RadarCheck radarCheck;
 
@@ -24,7 +24,6 @@ public class EnemyOutliner : MonoBehaviour
         friendlyMissileOutlineUI.gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
     private void Update()
     {
         //enemyMissileObject = FindObjectOfType<MissileHandler>().gameObject;
@@ -32,168 +31,75 @@ public class EnemyOutliner : MonoBehaviour
 
         if (cameraRelevant != null)
         {
-            EnemySpacecraftOutliner();
-            EnemySpacecraftInRangeOutliner();
-            //EnemyMissileOutliner();
-            FriendlySpaceCraftOutliner();
-            FriendlyMissileOutliner();
+            Outliner(enemySpacecraftObject, enemySpacecraftOutlineUI, enemySpacecraftInRangeOutlineUI);
+            InRangeOutliner(enemySpacecraftObject, enemySpacecraftOutlineUI, enemySpacecraftInRangeOutlineUI);
+            //Outliner(enemyMissileObject, enemyMissileOutlineUI);
+            Outliner(friendlySpacecraftObject, friendlySpacecraftOutlineUI, null);
+            Outliner(friendlyMissileObject, friendlyMissileOutlineUI, null);
         }
     }
 
-    private void EnemySpacecraftOutliner()
+    private void Outliner(GameObject _gameObject, RectTransform _objectOutlineUI, RectTransform _objectInRangeOutlineUI)
     {
-        if (enemySpacecraftObject != null && enemySpacecraftOutlineUI != null)
+        if (_gameObject != null && _objectOutlineUI != null)
         {
-            enemySpacecraftInRangeOutlineUI.gameObject.SetActive(false);
+            Vector3 _objectScreenPosition = cameraRelevant.WorldToScreenPoint(_gameObject.transform.position);
 
-            Vector3 enemySpacecraftScreenPosition = cameraRelevant.WorldToScreenPoint(enemySpacecraftObject.transform.position);
-
-            if (enemySpacecraftScreenPosition.z < 0)
+            if (_objectScreenPosition.z < 0)
             {
-                enemySpacecraftOutlineUI.gameObject.SetActive(false);
+                _objectOutlineUI.gameObject.SetActive(false);
             }
-            else if (enemySpacecraftScreenPosition.z >= 0)
+            else if (_objectScreenPosition.z >= 0)
             {
-                enemySpacecraftOutlineUI.gameObject.SetActive(true);
+                _objectOutlineUI.gameObject.SetActive(true);
             }
 
-            if (enemySpacecraftScreenPosition.z < 0 || enemySpacecraftScreenPosition.z > 998 || enemySpacecraftScreenPosition.x < 0 || enemySpacecraftScreenPosition.x > Screen.width || enemySpacecraftScreenPosition.y < 0 || enemySpacecraftScreenPosition.y > Screen.height)
+            if (_objectScreenPosition.z < 0 || _objectScreenPosition.z > 998 || _objectScreenPosition.x < 0 || _objectScreenPosition.x > Screen.width || _objectScreenPosition.y < 0 || _objectScreenPosition.y > Screen.height)
             {
-                // If off-screen, clamp the screen position to within the screen bounds
-                enemySpacecraftScreenPosition.x = Mathf.Clamp(enemySpacecraftScreenPosition.x, 0, Screen.width);
-                enemySpacecraftScreenPosition.y = Mathf.Clamp(enemySpacecraftScreenPosition.y, 0, Screen.height);
-                enemySpacecraftScreenPosition.z = Mathf.Clamp(enemySpacecraftScreenPosition.y, 0, 999);
+                _objectScreenPosition.x = Mathf.Clamp(_objectScreenPosition.x, 0, Screen.width);
+                _objectScreenPosition.y = Mathf.Clamp(_objectScreenPosition.y, 0, Screen.height);
+                _objectScreenPosition.z = Mathf.Clamp(_objectScreenPosition.z, 0, 999);
             }
 
-            enemySpacecraftOutlineUI.position = enemySpacecraftScreenPosition;
+            _objectOutlineUI.position = _objectScreenPosition;
+        }
+        if (_gameObject == null)
+        {
+            _objectOutlineUI.gameObject.SetActive(false);
         }
     }
 
-    private void EnemySpacecraftInRangeOutliner()
+    // kept redundant for range dependant UI drawing to be added later
+    private void InRangeOutliner(GameObject _gameObject, RectTransform _objectOutlineUI, RectTransform _objectInRangeOutlineUI)
     {
         if (radarCheck.targetLocked == true)
         {
-            if (enemySpacecraftObject != null && enemySpacecraftInRangeOutlineUI != null && enemySpacecraftOutlineUI != null)
+            if (_gameObject != null && _objectInRangeOutlineUI != null)
             {
-                Vector3 enemySpacecraftScreenPosition = cameraRelevant.WorldToScreenPoint(enemySpacecraftObject.transform.position);
+                Vector3 _objectScreenPosition = cameraRelevant.WorldToScreenPoint(_gameObject.transform.position);
 
-                if (enemySpacecraftScreenPosition.z < 0)
+                if (_objectScreenPosition.z < 0)
                 {
-                    enemySpacecraftInRangeOutlineUI.gameObject.SetActive(false);
+                    _objectInRangeOutlineUI.gameObject.SetActive(false);
                 }
-                else if (enemySpacecraftScreenPosition.z >= 0)
+                else if (_objectScreenPosition.z >= 0)
                 {
-                    enemySpacecraftInRangeOutlineUI.gameObject.SetActive(true);
-                }
-
-                if (enemySpacecraftScreenPosition.z < 0 || enemySpacecraftScreenPosition.z > 998 || enemySpacecraftScreenPosition.x < 0 || enemySpacecraftScreenPosition.x > Screen.width || enemySpacecraftScreenPosition.y < 0 || enemySpacecraftScreenPosition.y > Screen.height)
-                {
-                    // If off-screen, clamp the screen position to within the screen bounds
-                    enemySpacecraftScreenPosition.x = Mathf.Clamp(enemySpacecraftScreenPosition.x, 0, Screen.width);
-                    enemySpacecraftScreenPosition.y = Mathf.Clamp(enemySpacecraftScreenPosition.y, 0, Screen.height);
-                    enemySpacecraftScreenPosition.z = Mathf.Clamp(enemySpacecraftScreenPosition.y, 0, 999);
+                    _objectInRangeOutlineUI.gameObject.SetActive(true);
                 }
 
-                enemySpacecraftInRangeOutlineUI.position = enemySpacecraftScreenPosition;
+                if (_objectScreenPosition.z < 0 || _objectScreenPosition.z > 998 || _objectScreenPosition.x < 0 || _objectScreenPosition.x > Screen.width || _objectScreenPosition.y < 0 || _objectScreenPosition.y > Screen.height)
+                {
+                    _objectScreenPosition.x = Mathf.Clamp(_objectScreenPosition.x, 0, Screen.width);
+                    _objectScreenPosition.y = Mathf.Clamp(_objectScreenPosition.y, 0, Screen.height);
+                    _objectScreenPosition.z = Mathf.Clamp(_objectScreenPosition.z, 0, 999);
+                }
+
+                _objectInRangeOutlineUI.position = _objectScreenPosition;
             }
         }
         else
         {
-            enemySpacecraftInRangeOutlineUI.gameObject.SetActive(false);
-        }
-    }
-
-    private void EnemyMissileOutliner()
-    {
-        if (enemyMissileObject != null)
-        {
-            friendlyMissileOutlineUI.gameObject.SetActive(true);
-
-            Vector3 enemyMissileScreenPosition = cameraRelevant.WorldToScreenPoint(enemyMissileObject.transform.position);
-
-            if (enemyMissileScreenPosition.z < 0)
-            {
-                enemyMissileOutlineUI.gameObject.SetActive(false);
-            }
-            else if (enemyMissileScreenPosition.z >= 0)
-            {
-                enemyMissileObject.gameObject.SetActive(true);
-            }
-
-            if (enemyMissileScreenPosition.z < 0 || enemyMissileScreenPosition.z > 998 || enemyMissileScreenPosition.x < 0 || enemyMissileScreenPosition.x > Screen.width || enemyMissileScreenPosition.y < 0 || enemyMissileScreenPosition.y > Screen.height)
-            {
-                // If off-screen, clamp the screen position to within the screen bounds
-                enemyMissileScreenPosition.x = Mathf.Clamp(enemyMissileScreenPosition.x, 0, Screen.width);
-                enemyMissileScreenPosition.y = Mathf.Clamp(enemyMissileScreenPosition.y, 0, Screen.height);
-                enemyMissileScreenPosition.z = Mathf.Clamp(enemyMissileScreenPosition.y, 0, 999);
-            }
-
-            enemyMissileOutlineUI.position = enemyMissileScreenPosition;
-        }
-        else
-        {
-            enemyMissileOutlineUI.gameObject.SetActive(false);
-        }
-    }
-
-    private void FriendlySpaceCraftOutliner()
-    {
-        if (friendlySpacecraftObject != null && friendlySpacecraftOutlineUI != null)
-        {
-            Vector3 friendlySpacecraftScreenPosition = cameraRelevant.WorldToScreenPoint(friendlySpacecraftObject.transform.position);
-
-            if (friendlySpacecraftScreenPosition.z < 0)
-            {
-                friendlySpacecraftOutlineUI.gameObject.SetActive(false);
-            }
-            else if (friendlySpacecraftScreenPosition.z >= 0)
-            {
-                friendlySpacecraftOutlineUI.gameObject.SetActive(true);
-            }
-
-            if (friendlySpacecraftScreenPosition.z < 0 || friendlySpacecraftScreenPosition.z > 998 || friendlySpacecraftScreenPosition.x < 0 || friendlySpacecraftScreenPosition.x > Screen.width || friendlySpacecraftScreenPosition.y < 0 || friendlySpacecraftScreenPosition.y > Screen.height)
-            {
-                // If off-screen, clamp the screen position to within the screen bounds
-                friendlySpacecraftScreenPosition.x = Mathf.Clamp(friendlySpacecraftScreenPosition.x, 0, Screen.width);
-                friendlySpacecraftScreenPosition.y = Mathf.Clamp(friendlySpacecraftScreenPosition.y, 0, Screen.height);
-                friendlySpacecraftScreenPosition.z = Mathf.Clamp(friendlySpacecraftScreenPosition.y, 0, 999);
-            }
-
-            friendlySpacecraftOutlineUI.position = friendlySpacecraftScreenPosition;
-            //Debug.Log(friendlySpacecraftScreenPosition);
-        }
-    }
-
-    private void FriendlyMissileOutliner()
-    {
-        if (friendlyMissileObject != null)
-        {
-            friendlyMissileOutlineUI.gameObject.SetActive(true);
-
-            Vector3 friendlyMissileScreenPosition = cameraRelevant.WorldToScreenPoint(friendlyMissileObject.transform.position);
-
-            if (friendlyMissileScreenPosition.z < 0)
-            {
-                friendlyMissileOutlineUI.gameObject.SetActive(false);
-            }
-            else if (friendlyMissileScreenPosition.z >= 0)
-            {
-                friendlyMissileObject.gameObject.SetActive(true);
-            }
-
-            if (friendlyMissileScreenPosition.z < 0 || friendlyMissileScreenPosition.z > 998 || friendlyMissileScreenPosition.x < 0 || friendlyMissileScreenPosition.x > Screen.width || friendlyMissileScreenPosition.y < 0 || friendlyMissileScreenPosition.y > Screen.height)
-            {
-                // If off-screen, clamp the screen position to within the screen bounds
-                friendlyMissileScreenPosition.x = Mathf.Clamp(friendlyMissileScreenPosition.x, 0, Screen.width);
-                friendlyMissileScreenPosition.y = Mathf.Clamp(friendlyMissileScreenPosition.y, 0, Screen.height);
-                friendlyMissileScreenPosition.z = Mathf.Clamp(friendlyMissileScreenPosition.y, 0, 999);
-            }
-
-            friendlyMissileOutlineUI.position = friendlyMissileScreenPosition;
-        }
-        else
-        {
-            friendlyMissileOutlineUI.gameObject.SetActive(false);
+            _objectInRangeOutlineUI.gameObject.SetActive(false);
         }
     }
 }
